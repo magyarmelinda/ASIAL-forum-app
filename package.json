@@ -1,0 +1,49 @@
+{
+    "name": "framework7-core-tab-view",
+    "private": true,
+    "version": "1.0.0",
+    "description": "framework7-core-tab-view",
+    "repository": "",
+    "license": "UNLICENSED",
+    "scripts": {
+        "dev": "browser-sync start -s www/ --watch --port 8080 --ui-port 8081",
+        "copy-font": "cpy ./node_modules/framework7-icons/fonts/*.* ./www/fonts/",
+        "monaca:preview": "npm run dev"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-statusbar": {},
+            "monaca-plugin-monaca-core": {},
+            "cordova-plugin-camera": {},
+            "cordova-plugin-file": {}
+        }
+    },
+    "browserslist": [
+        "Android >= 7",
+        "IOS >= 11",
+        "Safari >= 11",
+        "Chrome >= 49",
+        "Firefox >= 31",
+        "Samsung >= 5"
+    ],
+    "dependencies": {
+        "cordova-plugin-camera": "5.0.1",
+        "cordova-plugin-file": "6.0.2",
+        "cordova-plugin-splashscreen": "6.0.0",
+        "cordova-plugin-statusbar": "2.4.3",
+        "cordova-plugin-whitelist": "1.3.4",
+        "dom7": "^2.1.5",
+        "framework7": "^5.7.12",
+        "framework7-icons": "^3.0.1",
+        "monaca-plugin-monaca-core": "3.3.1",
+        "nw": "^0.52.2",
+        "template7": "^1.4.2"
+    },
+    "devDependencies": {
+        "browser-sync": "^2.26.7",
+        "cordova": "^9.0.0",
+        "cpy-cli": "^3.1.1"
+    }
+}

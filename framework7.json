@@ -1,0 +1,18 @@
+{
+  "cwd": "/Users/asial/Documents/framework7-core-tab-view",
+  "type": [
+    "web"
+  ],
+  "name": "framework7-core-tab-view",
+  "framework": "core",
+  "template": "tabs",
+  "bundler": false,
+  "theming": {
+    "customColor": false,
+    "color": "#007aff",
+    "darkTheme": false,
+    "iconFonts": true,
+    "fillBars": false
+  },
+  "customBuild": false
+}

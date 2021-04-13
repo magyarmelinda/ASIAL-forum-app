@@ -3,6 +3,19 @@
     width: 100%;
 }
 
-.description {
-    height: 100px;
+.block-title {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 0px;
+    margin: 10px 10px 10px 10px;
+}
+
+.media-list {
+    margin-top: 0px;
+}
+
+.dialog{
+    width: 90% !important;
+    left: 5%;
+    margin-left: 0;
 }

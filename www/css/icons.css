@@ -14,7 +14,7 @@
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;
+  font-size: 28px;
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -59,3 +59,7 @@
   font-feature-settings: "liga";
   text-align: center;
 }
+
+.material-icons.md-18 { font-size: 18px; }
+.size-18 { font-size: 18px }
+

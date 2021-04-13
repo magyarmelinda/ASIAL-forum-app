@@ -20,6 +20,7 @@
 
 
   <link rel="stylesheet" href="framework7/css/framework7.bundle.min.css">
+  <link rel="stylesheet" href="framework7-icons/css/framework7-icons.css">
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/app.css">
   <script src="components/loader.js"></script>
@@ -37,7 +38,7 @@
           <div class="navbar-inner">
             <div class="title">Bulletin Board</div>
             <div class="right">
-              <a href="#" class="link icon-only popup-open" data-popup=".login-swipe-to-close">
+              <a href="#" class="link icon-only popup-open" data-popup=".login-popup">
                 <i class="icon f7-icons if-not-md">person</i>
                 <i class="icon material-icons if-md">person</i>
               </a>
@@ -46,16 +47,75 @@
         </div>
         <!-- Scrollable page content-->
         <div class="page-content">
-          <div class="block-title">Forum Threads</div>
-          <div class="right">
-            <a href="#" class="link icon-only popup-open" data-popup=".login-swipe-to-close">
-              <i class="icon f7-icons if-not-md">plus_circle</i>
-              <i class="icon material-icons if-md">plus_circle</i>
+          <div class="block-title">Forum Threads
+            <a href="#" class="link icon-only new-thread-dialog">
+              <button class="button">
+                <i class="icon f7-icons size-18 if-not-md">plus</i>
+                <i class="icon material-icons md-18 if-md">add</i>
+              </button>
             </a>
           </div>
+          <!-- Thread list -->
+          <div class="list media-list">
+            <ul>
+              <li class="swipeout">
+                <div class="swipeout-content">
+                  <a href="/thread/" class="item-link item-content">
+                    <div class="item-media"><img src="https://cdn.framework7.io/placeholder/fashion-88x88-1.jpg"
+                        width="44" /></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Beatles</div>
+                      </div>
+                      <div class="item-subtitle">Have you seen the movie about...</div>
+                    </div>
+                  </a>
+                </div>
+                <div class="swipeout-actions-right">
+                  <a href="#" class="swipeout-delete">Delete</a>
+                </div>
+              </li>
+              <li class="swipeout">
+                <div class="swipeout-content">
+                  <a href="#" class="item-link item-content">
+                    <div class="item-media"><img src="https://cdn.framework7.io/placeholder/fashion-88x88-2.jpg"
+                        width="44" />
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Queen</div>
+                      </div>
+                      <div class="item-subtitle">What is your favourite song from them?</div>
+                    </div>
+                  </a>
+                </div>
+                <div class="swipeout-actions-right">
+                  <a href="#" class="swipeout-delete">Delete</a>
+                </div>
+              </li>
+              <li class="swipeout">
+                <div class="swipeout-content">
+                  <a href="#" class="item-link item-content">
+                    <div class="item-media"><img src="https://cdn.framework7.io/placeholder/fashion-88x88-3.jpg"
+                        width="44" />
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Michael Jackson</div>
+                      </div>
+                      <div class="item-subtitle">Is he really dead?</div>
+                    </div>
+                  </a>
+                </div>
+                <div class="swipeout-actions-right">
+                  <a href="#" class="swipeout-delete">Delete</a>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <!-- Login Page -->
-        <div class="popup login-swipe-to-close">
+        <!-- Login Pop Up -->
+        <div class="popup login-popup">
           <div class="view popup-view" data-view="popup-view">
             <div class="page" data-name="login">
               <div class="page-content login-screen-content">
@@ -67,7 +127,7 @@
                         <div class="item-inner">
                           <div class="item-title item-label">Username</div>
                           <div class="item-input-wrap">
-                            <input type="text" name="username" placeholder="Your username"/>
+                            <input type="text" name="username" placeholder="Your username" />
                           </div>
                         </div>
                       </li>
@@ -75,7 +135,7 @@
                         <div class="item-inner">
                           <div class="item-title item-label">Password</div>
                           <div class="item-input-wrap">
-                            <input type="password" name="password" placeholder="Your password"/>
+                            <input type="password" name="password" placeholder="Your password" />
                           </div>
                         </div>
                       </li>
@@ -90,49 +150,40 @@
             </div>
           </div>
         </div>
-
-
-
-        <!-- <div class="login-screen" id="add-thread-screen">
-          <div class="view">
-            <div class="page">
-              <div class="page-content login-screen-content">
+        <!-- New Thread Pop Up -->
+        <div class="popup new-thread-popup">
+          <div class="page" data-name="new-thread">
+            <div class="page-content login-screen-content">
+              <div class="login-screen-title">New Topic</div>
+              <form class="list">
                 <div class="list">
                   <ul>
                     <li class="item-content item-input">
                       <div class="item-inner">
                         <div class="item-input-wrap">
-                          <input type="text" name="username" placeholder="Thread Title">
+                          <input type="text" name="title" placeholder="Thread Title" />
                         </div>
                       </div>
                     </li>
-                    <li class="item-content item-input item-input-outline">
+                    <li class="item-content item-input">
                       <div class="item-inner">
                         <div class="item-input-wrap">
-                          <textarea placeholder="Description"></textarea>
+                          <textarea name="description" placeholder="Description"></textarea>
                         </div>
                       </div>
                     </li>
                   </ul>
                 </div>
-                <div class="list">
-                  <ul>
-                    <li>
-                      <a href="#" class="item-link list-button login-screen-close">Create Thread</a>
-                    </li>
-                  </ul>
+                <div class="row display-flex justify-content-center">
+                  <a class="button popup-close" href="#">Create Thread</a>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
-        </div> -->
+        </div>
 
       </div>
     </div>
-  </div>
-
-  </div>
-
   </div>
 
   <!-- Framework7 library -->

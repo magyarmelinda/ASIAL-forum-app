@@ -51,13 +51,41 @@ const loginView = app.views.create('.popup-view', {
   }
 })
 
-// Create Popup with swipe to close
+// Create Popups with swipe to close
 const loginSwipeToClosePopup = app.popup.create({
-  el: '.login-swipe-to-close',
+  el: '.login-popup',
   swipeToClose: true,
 });
 
 const registerSwipeToClosePopup = app.popup.create({
-  el: '.register-swipe-to-close',
+  el: '.register-popup',
   swipeToClose: true,
+});
+
+const newThreadSwipeToClosePopup = app.popup.create({
+  el: '.new-thread-popup',
+  swipeToClose: true,
+});
+
+$$(document).on("click", ".new-thread-dialog", function () {
+  app.dialog.create({
+    content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" name="title" placeholder="Thread Title" /> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea name="description" placeholder="Description"></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button create-thread-dialog" href="#">Create Thread</a> <a class="button create-thread-dialog" href="#">Cancel</a> </div> </form> </div>',
+    cssClass: 'dialog'
+  }).open();
+});
+
+// Create Dialogs open/close functions
+$$(document).on("click", ".create-thread-dialog", function () {
+  app.dialog.close();
+});
+
+$$(document).on("click", ".new-comment-dialog", function () {
+  app.dialog.create({
+    content: '<div class="page-content login-screen-content"> <form class="list"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea name="description" placeholder="Write your comment here"></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button popup-close submit-comment-dialog" href="#">Submit</a>  <a class="button submit-comment-dialog" href="#">Cancel</a></div> </form> </div>',
+    cssClass: 'dialog'
+  }).open();
+});
+
+$$(document).on("click", ".submit-comment-dialog", function () {
+  app.dialog.close();
 });

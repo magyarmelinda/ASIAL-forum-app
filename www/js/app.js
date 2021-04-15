@@ -74,7 +74,8 @@ $$(document).on("click", ".new-thread-dialog", function () {
   }).open();
 });
 
-// Create Dialogs open/close functions
+// Create Dialogs 
+// Open/close
 $$(document).on("click", ".create-thread-dialog", function () {
   app.dialog.close();
 });
@@ -88,4 +89,18 @@ $$(document).on("click", ".new-comment-dialog", function () {
 
 $$(document).on("click", ".submit-comment-dialog", function () {
   app.dialog.close();
+});
+
+// Confirm
+$$(document).on("click", ".delete-thread-dialog", function () {
+  app.dialog.confirm(' Are you sure you want to delete the thread?', '', function () {
+    app.dialog.alert('Thread Deleted', '');
+  });
+});
+
+
+$$(document).on("click", ".delete-comment-dialog", function () {
+  app.dialog.confirm(' Are you sure you want to delete the comment?', '', function () {
+    app.dialog.alert('Comment Deleted', '');
+  });
 });

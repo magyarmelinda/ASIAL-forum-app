@@ -13,3 +13,26 @@
 .media-list {
     margin-top: 0px;
 }
+
+.demo-card-header-pic .card-header {
+    height: 40vw;
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+  }
+
+.demo-card-header-pic .card-content-padding .date {
+    color: #8e8e93;
+  }
+
+.item-inner {
+    padding-bottom: 2px;
+}
+
+.date {
+    margin-top: 5px;
+}
+
+.delete-thread-dialog {
+    background-color: red !important;
+}

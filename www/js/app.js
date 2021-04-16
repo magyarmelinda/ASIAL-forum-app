@@ -42,15 +42,6 @@ var app = new Framework7({
   routes: routes,
 });
 
-// Create view
-const loginView = app.views.create('.popup-view', {
-  on: {
-    pageInit: function () {
-      console.log('page init');
-    }
-  }
-})
-
 // Create Popups with swipe to close
 const loginSwipeToClosePopup = app.popup.create({
   el: '.login-popup',
@@ -97,7 +88,6 @@ $$(document).on("click", ".delete-thread-dialog", function () {
     app.dialog.alert('Thread Deleted', '');
   });
 });
-
 
 $$(document).on("click", ".delete-comment-dialog", function () {
   app.dialog.confirm(' Are you sure you want to delete the comment?', '', function () {

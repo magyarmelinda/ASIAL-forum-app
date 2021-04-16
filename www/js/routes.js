@@ -6,7 +6,7 @@ var routes = [
   },
   {
     path: '/login/',
-    el: document.querySelector('.page[data-name="login"]'),
+    el: document.querySelector('.page[data-name="popup-view"]'),
   },
   {
     path: '/register/',

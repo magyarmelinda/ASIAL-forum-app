@@ -20,7 +20,6 @@
 
 
   <link rel="stylesheet" href="framework7/css/framework7.bundle.min.css">
-  <link rel="stylesheet" href="framework7-icons/css/framework7-icons.css">
   <link rel="stylesheet" href="css/icons.css">
   <link rel="stylesheet" href="css/app.css">
   <script src="components/loader.js"></script>
@@ -61,11 +60,10 @@
               <li class="swipeout">
                 <div class="swipeout-content">
                   <a href="/thread/" class="item-link item-content">
-                    <div class="item-media"><img src="http://placehold.jp/40x40.png"
-                        width="44" /></div>
+                    <div class="item-media"><img src="http://placehold.jp/40x40.png" width="44" /></div>
                     <div class="item-inner">
                       <div class="item-title-row">
-                        <div class="item-title">Beatles</div>
+                        <div class="item-title">Movies</div>
                       </div>
                       <div class="item-subtitle">Have you seen the movie about...</div>
                     </div>
@@ -78,32 +76,13 @@
               <li class="swipeout">
                 <div class="swipeout-content">
                   <a href="#" class="item-link item-content">
-                    <div class="item-media"><img src="http://placehold.jp/40x40.png"
-                        width="44" />
+                    <div class="item-media"><img src="http://placehold.jp/40x40.png" width="44" />
                     </div>
                     <div class="item-inner">
                       <div class="item-title-row">
-                        <div class="item-title">Queen</div>
+                        <div class="item-title">Music</div>
                       </div>
-                      <div class="item-subtitle">What is your favourite song from them?</div>
-                    </div>
-                  </a>
-                </div>
-                <div class="swipeout-actions-right">
-                  <a href="#" class="delete-thread-dialog">Delete</a>
-                </div>
-              </li>
-              <li class="swipeout">
-                <div class="swipeout-content">
-                  <a href="#" class="item-link item-content">
-                    <div class="item-media"><img src="http://placehold.jp/40x40.png"
-                        width="44" />
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Michael Jackson</div>
-                      </div>
-                      <div class="item-subtitle">Is he really dead?</div>
+                      <div class="item-subtitle">What is your favourite song?</div>
                     </div>
                   </a>
                 </div>
@@ -116,10 +95,10 @@
         </div>
         <!-- Login Pop Up -->
         <div class="popup login-popup">
-          <div class="view popup-view" data-view="popup-view">
-            <div class="page" data-name="login">
+          <div class="view view-init view-popup" data-view="popup-view">
+            <div class="page" data-name="popup-view">
               <div class="page-content login-screen-content">
-                <div class="login-screen-title">Log In</div>
+                <div class="login-screen-title">Login</div>
                 <form class="list">
                   <div class="list">
                     <ul>
@@ -143,7 +122,7 @@
                   </div>
                   <div class="row display-flex justify-content-center">
                     <a class="button popup-close" href="#">Sign In</a>
-                    <a class="button" href="/register/">Register</a>
+                    <a class="button" href="/register/" data-view=".view-popup">Sign Up</a>
                   </div>
                 </form>
               </div>

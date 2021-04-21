@@ -42,22 +42,14 @@ var app = new Framework7({
   routes: routes,
 });
 
-// Create Popups with swipe to close
+// Pop ups with swipe to close
 const loginSwipeToClosePopup = app.popup.create({
   el: '.login-popup',
   swipeToClose: true,
 });
 
-const registerSwipeToClosePopup = app.popup.create({
-  el: '.register-popup',
-  swipeToClose: true,
-});
-
-const newThreadSwipeToClosePopup = app.popup.create({
-  el: '.new-thread-popup',
-  swipeToClose: true,
-});
-
+// Dialogs 
+// Open a dialog for adding a new thread
 $$(document).on("click", ".new-thread-dialog", function () {
   app.dialog.create({
     content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" name="title" placeholder="Thread Title" /> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea name="description" placeholder="Description"></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button create-thread-dialog" href="#">Create Thread</a> <a class="button create-thread-dialog" href="#">Cancel</a> </div> </form> </div>',
@@ -65,12 +57,12 @@ $$(document).on("click", ".new-thread-dialog", function () {
   }).open();
 });
 
-// Create Dialogs 
-// Open/close
+// After adding it, close the thread dialog
 $$(document).on("click", ".create-thread-dialog", function () {
   app.dialog.close();
 });
 
+// Open a dialog for adding a new comment
 $$(document).on("click", ".new-comment-dialog", function () {
   app.dialog.create({
     content: '<div class="page-content login-screen-content"> <form class="list"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea name="description" placeholder="Write your comment here"></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button popup-close submit-comment-dialog" href="#">Submit</a>  <a class="button submit-comment-dialog" href="#">Cancel</a></div> </form> </div>',
@@ -78,17 +70,19 @@ $$(document).on("click", ".new-comment-dialog", function () {
   }).open();
 });
 
+// After submission, close comment dialog
 $$(document).on("click", ".submit-comment-dialog", function () {
   app.dialog.close();
 });
 
-// Confirm
+// Confirmation dialog for deleting a thread
 $$(document).on("click", ".delete-thread-dialog", function () {
   app.dialog.confirm(' Are you sure you want to delete the thread?', '', function () {
     app.dialog.alert('Thread Deleted', '');
   });
 });
 
+// Confirmation dialog for deleting a comment
 $$(document).on("click", ".delete-comment-dialog", function () {
   app.dialog.confirm(' Are you sure you want to delete the comment?', '', function () {
     app.dialog.alert('Comment Deleted', '');

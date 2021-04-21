@@ -36,3 +36,7 @@
 .delete-thread-dialog {
     background-color: red !important;
 }
+
+.pink-text {
+    color: pink;
+}

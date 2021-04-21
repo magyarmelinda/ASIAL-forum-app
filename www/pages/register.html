@@ -1,16 +1,16 @@
 <template>
   <div class="page" data-name="register">
-    <div class="popup register-swipe-to-close"></div>
+    <div class="popup register-popup"></div>
     <div class="page-content login-screen-content">
       <div class="login-screen-title">Register</div>
-      <form class="list">
+      <form class="list" id="signup-form">
         <div class="list">
           <ul>
             <li class="item-content item-input">
               <div class="item-inner">
-                <div class="item-title item-label">Username</div>
+                <div class="item-title item-label">Email</div>
                 <div class="item-input-wrap">
-                  <input type="text" name="username" placeholder="Your username" />
+                  <input type="email" id="signup-email" name="email" placeholder="Your email address" required validate/>
                 </div>
               </div>
             </li>
@@ -18,14 +18,15 @@
               <div class="item-inner">
                 <div class="item-title item-label">Password</div>
                 <div class="item-input-wrap">
-                  <input type="password" name="password" placeholder="Your password" />
+                  <input type="password" id="signup-password" name="password" placeholder="Your password" required validate/>
                 </div>
               </div>
             </li>
           </ul>
         </div>
         <div class="row display-flex justify-content-center">
-          <a class="button popup-close register-user">Sign Up</a>
+          <p class="error pink-text"></p>
+          <a class="button register-user">Sign Up</a>
         </div>
         <div class="block-footer">
           <p class="text-align-right">Already Have an Account? <a class="link" href="/login/">Sign in</a></p>
@@ -35,3 +36,34 @@
   </div>
   </div>
 </template>
+
+<script>
+  return {
+    data: function () {
+      return {
+      }
+    },
+    on: {
+      pageInit: function (e, page) {
+        // Sign Up
+        const signUpForm = document.querySelector('#signup-form');
+        const signUpBtn = document.querySelector('.register-user');
+        signUpBtn.addEventListener('click', () => {
+
+          // Get user info
+          const email = signUpForm['signup-email'].value;
+          const password = signUpForm['signup-password'].value;
+
+          // Sign up the user
+          auth.createUserWithEmailAndPassword(email, password).then(cred => {
+            console.log(cred.user);
+            // TO DO: error handling, closing pop up
+          }).catch(error => {
+            console.log(error.message);
+          });
+        })
+      }
+    }
+  }
+
+</script>

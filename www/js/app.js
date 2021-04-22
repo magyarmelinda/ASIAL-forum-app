@@ -42,6 +42,35 @@ var app = new Framework7({
   routes: routes,
 });
 
+// Setting up the threads
+const threadsList = document.querySelector('.threads');
+const setUpThreads = (data) => {
+  let html = '';
+  data.forEach(doc => {
+    const thread = doc.data();
+    const li = `
+      <li class="swipeout">
+        <div class="swipeout-content">
+          <a href="/thread/" class="item-link item-content">
+            <div class="item-media"><img src="http://placehold.jp/40x40.png" width="44"/></div>
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">${thread.title}</div>
+              </div>
+              <div class="item-subtitle">${thread.description}</div>
+            </div>
+          </a>
+        </div>
+        <div class="swipeout-actions-right">
+          <a href="#" class="delete-thread-dialog">Delete</a>
+        </div>
+      </li>  
+    `;
+    html += li;
+  });
+  threadsList.innerHTML = html;
+}
+
 // Pop ups with swipe to close
 const loginSwipeToClosePopup = app.popup.create({
   el: '.login-popup',

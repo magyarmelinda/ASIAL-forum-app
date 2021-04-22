@@ -35,11 +35,15 @@
         <div class="navbar">
           <div class="navbar-bg"></div>
           <div class="navbar-inner">
-            <div class="title">Bulletin Board</div>
+            <div class="title" id="panel-header">Bulletin Board</div>
             <div class="right">
-              <a href="#" class="link icon-only popup-open" data-popup=".login-popup">
-                <i class="icon f7-icons if-not-md">person</i>
-                <i class="icon material-icons if-md">person</i>
+              <a href="#" class="link popup-open" data-popup=".login-popup">
+                <i class="f7-icons if-not-md">person</i>
+                <i class="material-icons md-only">person</i>
+              </a>
+              <a href="#" class="link" id="logout">
+                <i class="f7-icons if-not-md">square_arrow_right</i>
+                <i class="material-icons md-only">exit_to_app</i>
               </a>
             </div>
           </div>
@@ -60,7 +64,7 @@
               <li class="swipeout">
                 <div class="swipeout-content">
                   <a href="/thread/" class="item-link item-content">
-                    <div class="item-media"><img src="http://placehold.jp/40x40.png" width="44" /></div>
+                    <div class="item-media"><img src="http://placehold.jp/40x40.png" width="44"/></div>
                     <div class="item-inner">
                       <div class="item-title-row">
                         <div class="item-title">Movies</div>
@@ -76,7 +80,7 @@
               <li class="swipeout">
                 <div class="swipeout-content">
                   <a href="#" class="item-link item-content">
-                    <div class="item-media"><img src="http://placehold.jp/40x40.png" width="44" />
+                    <div class="item-media"><img src="http://placehold.jp/40x40.png" width="44"/>
                     </div>
                     <div class="item-inner">
                       <div class="item-title-row">
@@ -99,14 +103,14 @@
             <div class="page" data-name="popup-view">
               <div class="page-content login-screen-content">
                 <div class="login-screen-title">Login</div>
-                <form class="list">
+                <form class="list" id="signin-form">
                   <div class="list">
                     <ul>
                       <li class="item-content item-input">
                         <div class="item-inner">
-                          <div class="item-title item-label">Username</div>
+                          <div class="item-title item-label">Email</div>
                           <div class="item-input-wrap">
-                            <input type="text" name="username" placeholder="Your username" />
+                            <input type="email" id="signin-email" name="username" placeholder="Your email address" required validate/>
                           </div>
                         </div>
                       </li>
@@ -114,14 +118,15 @@
                         <div class="item-inner">
                           <div class="item-title item-label">Password</div>
                           <div class="item-input-wrap">
-                            <input type="password" name="password" placeholder="Your password" />
+                            <input type="password" id="signin-password" name="password" placeholder="Your password" required validate/>
                           </div>
                         </div>
                       </li>
                     </ul>
                   </div>
+                  <p class="item-label display-flex justify-content-center error red-text"></p>
                   <div class="row display-flex justify-content-center">
-                    <a class="button popup-close" href="#">Sign In</a>
+                    <a class="button" id="sign-in" href="#">Sign In</a>
                     <a class="button" href="/register/" data-view=".view-popup">Sign Up</a>
                   </div>
                 </form>

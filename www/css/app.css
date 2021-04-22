@@ -3,6 +3,10 @@
     width: 100%;
 }
 
+.display {
+    display: none;
+}
+
 .block-title {
     margin-top: 10px;
     margin-left: 10px;

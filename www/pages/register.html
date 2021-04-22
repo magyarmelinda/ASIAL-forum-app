@@ -1,6 +1,5 @@
 <template>
   <div class="page" data-name="register">
-    <div class="popup register-popup"></div>
     <div class="page-content login-screen-content">
       <div class="login-screen-title">Register</div>
       <form class="list" id="signup-form">
@@ -24,8 +23,8 @@
             </li>
           </ul>
         </div>
+        <p class="item-label display-flex justify-content-center error red-text"></p>
         <div class="row display-flex justify-content-center">
-          <p class="error pink-text"></p>
           <a class="button register-user">Sign Up</a>
         </div>
         <div class="block-footer">
@@ -48,20 +47,23 @@
         // Sign Up
         const signUpForm = document.querySelector('#signup-form');
         const signUpBtn = document.querySelector('.register-user');
+
         signUpBtn.addEventListener('click', () => {
+          if (app.input.validate('#signup-email') && app.input.validate('#signup-password')) {
+            // Get user info
+            const email = signUpForm['signup-email'].value;
+            const password = signUpForm['signup-password'].value;
 
-          // Get user info
-          const email = signUpForm['signup-email'].value;
-          const password = signUpForm['signup-password'].value;
-
-          // Sign up the user
-          auth.createUserWithEmailAndPassword(email, password).then(cred => {
-            console.log(cred.user);
-            // TO DO: error handling, closing pop up
-          }).catch(error => {
-            console.log(error.message);
-          });
-        })
+            // Sign up the user
+            auth.createUserWithEmailAndPassword(email, password).then(cred => {
+              signUpForm.reset();
+              signUpForm.querySelector('.error').innerHTML = '';
+              app.popup.close('.login-popup');
+            }).catch(error => {
+              signUpForm.querySelector('.error').innerHTML = error.message;
+            });
+          }
+        });
       }
     }
   }

@@ -37,21 +37,25 @@
           <div class="navbar-inner">
             <div class="title" id="panel-header">Bulletin Board</div>
             <div class="right">
-              <a href="#" class="link popup-open" data-popup=".login-popup">
-                <i class="f7-icons if-not-md">person</i>
-                <i class="material-icons md-only">person</i>
-              </a>
-              <a href="#" class="link" id="logout">
-                <i class="f7-icons if-not-md">square_arrow_right</i>
-                <i class="material-icons md-only">exit_to_app</i>
-              </a>
+              <div class="signed-out display">
+                <a href="#" class="link popup-open" data-popup=".login-popup">
+                  <i class="f7-icons if-not-md">person</i>
+                  <i class="material-icons md-only">person</i>
+                </a>
+              </div>
+              <div class="signed-in display">
+                <a href="#" class="link" id="logout">
+                  <i class="f7-icons if-not-md">square_arrow_right</i>
+                  <i class="material-icons md-only">exit_to_app</i>
+                </a>
+              </div>
             </div>
           </div>
         </div>
         <!-- Scrollable page content-->
         <div class="page-content">
           <div class="block-title">Forum Threads
-            <a href="#" class="link icon-only new-thread-dialog">
+            <a href="#" class="link icon-only new-thread-dialog signed-in display">
               <button class="button">
                 <i class="icon f7-icons size-18 if-not-md">plus</i>
                 <i class="icon material-icons md-18 if-md">add</i>

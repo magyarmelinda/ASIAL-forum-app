@@ -1,6 +1,15 @@
+// Get data
+db.collection('threads').get().then(snapshot => {
+  setUpThreads(snapshot.docs);
+});
+
 // Listen for Auth status changes
 auth.onAuthStateChanged(user => {
-  console.log(user);
+  if(user) {
+    console.log('User logged in: ', user);
+  } else {
+    console.log('User is logged out.');
+  }
 });
 
 // Logout
@@ -27,7 +36,6 @@ signInBtn.addEventListener('click', () => {
       signInForm.querySelector('.error').innerHTML = '';
     }).catch(error => {
       signInForm.querySelector('.error').innerHTML = error.message;
-    });;
-
+    });
   }
 });

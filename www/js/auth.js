@@ -7,8 +7,10 @@ db.collection('threads').get().then(snapshot => {
 auth.onAuthStateChanged(user => {
   if(user) {
     console.log('User logged in: ', user);
+    setUpUI(user);
   } else {
     console.log('User is logged out.');
+    setUpUI(user);
   }
 });
 

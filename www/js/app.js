@@ -42,8 +42,23 @@ var app = new Framework7({
   routes: routes,
 });
 
-// Setting up the threads
 const threadsList = document.querySelector('.threads');
+const signedInLinks = document.querySelectorAll('.signed-in');
+const signedOutLinks = document.querySelectorAll('.signed-out');
+
+const setUpUI = (user) => {
+  if(user) {
+    // Toggle UI elements
+    signedInLinks.forEach(item => item.style.display = 'block');
+    signedOutLinks.forEach(item => item.style.display = 'none');
+  } else {
+    // Toggle UI elements
+    signedInLinks.forEach(item => item.style.display = 'none');
+    signedOutLinks.forEach(item => item.style.display = 'block');
+  }
+}
+
+// Setting up the threads
 const setUpThreads = (data) => {
   let html = '';
   data.forEach(doc => {
@@ -71,6 +86,8 @@ const setUpThreads = (data) => {
   threadsList.innerHTML = html;
 }
 
+
+
 // Pop ups with swipe to close
 const loginSwipeToClosePopup = app.popup.create({
   el: '.login-popup',
@@ -81,7 +98,7 @@ const loginSwipeToClosePopup = app.popup.create({
 // Open a dialog for adding a new thread
 $$(document).on("click", ".new-thread-dialog", function () {
   app.dialog.create({
-    content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" name="title" placeholder="Thread Title" /> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea name="description" placeholder="Description"></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button create-thread-dialog" href="#">Create Thread</a> <a class="button create-thread-dialog" href="#">Cancel</a> </div> </form> </div>',
+    content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list create-thread-form"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" id="title" name="title" placeholder="Thread Title" /> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Description"></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button create-thread" href="#">Create Thread</a> <a class="button create-thread-dialog" href="#">Cancel</a> </div> </form> </div>',
     cssClass: 'dialog'
   }).open();
 });

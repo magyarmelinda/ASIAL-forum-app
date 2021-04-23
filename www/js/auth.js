@@ -1,4 +1,4 @@
-// Get data
+// Get data 
 db.collection('threads')
   .orderBy('created', 'desc')
   .onSnapshot(snapshot => {
@@ -8,10 +8,8 @@ db.collection('threads')
 // Listen for Auth status changes
 auth.onAuthStateChanged(user => {
   if (user) {
-    console.log('User logged in: ', user);
     setUpUI(user);
   } else {
-    console.log('User is logged out.');
     setUpUI(user);
   }
 });

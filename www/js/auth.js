@@ -1,11 +1,13 @@
 // Get data
-db.collection('threads').get().then(snapshot => {
-  setUpThreads(snapshot.docs);
-});
+db.collection('threads')
+  .orderBy('created', 'desc')
+  .onSnapshot(snapshot => {
+    setUpThreads(snapshot.docs);
+  });
 
 // Listen for Auth status changes
 auth.onAuthStateChanged(user => {
-  if(user) {
+  if (user) {
     console.log('User logged in: ', user);
     setUpUI(user);
   } else {

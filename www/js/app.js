@@ -2,44 +2,19 @@ var $$ = Dom7;
 
 var app = new Framework7({
   root: '#app', // App root element
-  name: 'framework7-core-tab-view', // App name
+  name: 'forum-app', // App name
   theme: 'auto', // Automatic theme detection
 
   // App root data
   data: function () {
     return {
-      user: {
-        firstName: 'John',
-        lastName: 'Doe',
-      },
-      // Demo products for Catalog section
-      products: [
-        {
-          id: '1',
-          title: 'Apple iPhone 8',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi tempora similique reiciendis, error nesciunt vero, blanditiis pariatur dolor, minima sed sapiente rerum, dolorem corrupti hic modi praesentium unde saepe perspiciatis.'
-        },
-        {
-          id: '2',
-          title: 'Apple iPhone 8 Plus',
-          description: 'Velit odit autem modi saepe ratione totam minus, aperiam, labore quia provident temporibus quasi est ut aliquid blanditiis beatae suscipit odio vel! Nostrum porro sunt sint eveniet maiores, dolorem itaque!'
-        },
-        {
-          id: '3',
-          title: 'Apple iPhone X',
-          description: 'Expedita sequi perferendis quod illum pariatur aliquam, alias laboriosam! Vero blanditiis placeat, mollitia necessitatibus reprehenderit. Labore dolores amet quos, accusamus earum asperiores officiis assumenda optio architecto quia neque, quae eum.'
-        },
-      ]
+      // App root data
     };
   },
-  // App root methods
   methods: {
-    helloWorld: function () {
-      app.dialog.alert('Hello World!');
-    },
+    // App root methods
   },
-  // App routes
-  routes: routes,
+  routes: routes, // App routes
 });
 
 const threadsList = document.querySelector('.threads');
@@ -68,7 +43,8 @@ const newThread = () => {
     if (app.input.validate('#title') && app.input.validate('#description')) {
       db.collection('threads').add({
         title: createThreadForm['title'].value,
-        description: createThreadForm['description'].value
+        description: createThreadForm['description'].value,
+        created: firebase.firestore.FieldValue.serverTimestamp()
       }).then(() => {
         app.dialog.close();
         createThreadForm.reset();
@@ -113,7 +89,7 @@ const loginSwipeToClosePopup = app.popup.create({
 
 // Dialogs 
 // Open a dialog for adding a new thread
-$$(document).on("click", ".new-thread-dialog", function () {
+$$('.new-thread-dialog').on("click", function () {
   app.dialog.create({
     content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list" id="create-thread-form"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" id="title" name="title" placeholder="Thread Title" required validate/> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Description" required validate></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="create-thread" href="#">Create Thread</a> <a class="button" id="cancel-thread" href="#">Cancel</a> </div> </form> </div>',
     cssClass: 'dialog'

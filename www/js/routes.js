@@ -1,5 +1,5 @@
 
-var routes = [
+const routes = [
   {
     path: '/',
     url: './index.html',
@@ -16,7 +16,7 @@ var routes = [
     path: '/thread/:name/',
     componentUrl: './pages/thread.html',
   },
-  // Default route (404 page). MUST BE THE LAST
+  // Default Route (404 page). MUST BE THE LAST
   {
     path: '(.*)',
     url: './pages/404.html',

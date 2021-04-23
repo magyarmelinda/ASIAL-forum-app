@@ -1,11 +1,13 @@
-// Get data 
+// Get Data 
+const getData = () => {
 db.collection('threads')
   .orderBy('created', 'desc')
   .onSnapshot(snapshot => {
     setUpThreads(snapshot.docs);
   });
+}
 
-// Listen for Auth status changes
+// Listen for Auth Status Changes
 auth.onAuthStateChanged(user => {
   if (user) {
     setUpUI(user);
@@ -26,13 +28,13 @@ const signInBtn = document.querySelector('#sign-in');
 
 signInBtn.addEventListener('click', () => {
   if (app.input.validate('#signin-email') && app.input.validate('#signin-password')) {
-    // Get user info
+    // Get User Info
     const email = signInForm['signin-email'].value;
     const password = signInForm['signin-password'].value;
 
-    // Sign in the user
+    // Sign In the User
     auth.signInWithEmailAndPassword(email, password).then(cred => {
-      // Close the sign in popup and reset the form
+      // Close the Sign In Popup and Reset the Form
       app.popup.close('.login-popup');
       signInForm.reset();
       signInForm.querySelector('.error').innerHTML = '';
@@ -42,20 +44,20 @@ signInBtn.addEventListener('click', () => {
   }
 });
 
-//Sign up
+//Sign Up
 const signUp = () => {
   const signUpForm = document.querySelector('#signup-form');
   const signUpBtn = document.querySelector('#sign-up');
 
   signUpBtn.addEventListener('click', () => {
     if (app.input.validate('#signup-email') && app.input.validate('#signup-password')) {
-      // Get user info
+      // Get User Info
       const email = signUpForm['signup-email'].value;
       const password = signUpForm['signup-password'].value;
 
-      // Sign up the user
+      // Sign Up The User
       auth.createUserWithEmailAndPassword(email, password).then(cred => {
-        // Close the sign up popup and reset the form
+        // Close the Sign Up Popup and Reset the Form
         app.popup.close('.login-popup');
         app.dialog.alert('You have successfully registered and logged in.', '');
         signUpForm.reset();

@@ -2,7 +2,7 @@
    Configurations for the Firebase
 - - - - - - - - - - - - - - - - - - -  */
 
-// Firebase configuration and initialization
+// Firebase Configuration and Initialization
 const firebaseConfig = {
     apiKey: 'AIzaSyCwceNNJxOmLiNQEWqA9_Kwo1p1L76Q9io',
     authDomain: 'monaca-forum-app.firebaseapp.com',
@@ -12,6 +12,6 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Make Auth and Firestore references
+// Make Auth and Firestore References
 const auth = firebase.auth();
 const db = firebase.firestore();

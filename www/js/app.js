@@ -2,7 +2,7 @@ var $$ = Dom7;
 
 var app = new Framework7({
   root: '#app', // App root element
-  name: 'forum-app', // App name
+  name: 'framework7-core-tab-view', // App name
   theme: 'auto', // Automatic theme detection
 
   // App root data

@@ -41,3 +41,28 @@ signInBtn.addEventListener('click', () => {
     });
   }
 });
+
+//Sign up
+const signUp = () => {
+  const signUpForm = document.querySelector('#signup-form');
+  const signUpBtn = document.querySelector('#sign-up');
+
+  signUpBtn.addEventListener('click', () => {
+    if (app.input.validate('#signup-email') && app.input.validate('#signup-password')) {
+      // Get user info
+      const email = signUpForm['signup-email'].value;
+      const password = signUpForm['signup-password'].value;
+
+      // Sign up the user
+      auth.createUserWithEmailAndPassword(email, password).then(cred => {
+        // Close the sign up popup and reset the form
+        app.popup.close('.login-popup');
+        app.dialog.alert('You have successfully registered and logged in.', '');
+        signUpForm.reset();
+        signUpForm.querySelector('.error').innerHTML = '';
+      }).catch(error => {
+        signUpForm.querySelector('.error').innerHTML = error.message;
+      });
+    }
+  });
+}

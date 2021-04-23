@@ -47,15 +47,34 @@ const signedInLinks = document.querySelectorAll('.signed-in');
 const signedOutLinks = document.querySelectorAll('.signed-out');
 
 const setUpUI = (user) => {
-  if(user) {
+  if (user) {
     // Toggle UI elements
-    signedInLinks.forEach(item => item.style.display = 'block');
+    signedInLinks.forEach(item => item.style.display = 'inline');
     signedOutLinks.forEach(item => item.style.display = 'none');
   } else {
     // Toggle UI elements
     signedInLinks.forEach(item => item.style.display = 'none');
-    signedOutLinks.forEach(item => item.style.display = 'block');
+    signedOutLinks.forEach(item => item.style.display = 'inline');
   }
+}
+
+// Create new thread
+const newThread = () => {
+  const createThreadForm = document.querySelector('#create-thread-form');
+  const createThreadBtn = document.querySelector('#create-thread');
+
+  createThreadBtn.addEventListener('click', () => {
+    //TO DO: picture
+    if (app.input.validate('#title') && app.input.validate('#description')) {
+      db.collection('threads').add({
+        title: createThreadForm['title'].value,
+        description: createThreadForm['description'].value
+      }).then(() => {
+        app.dialog.close();
+        createThreadForm.reset();
+      });
+    }
+  });
 }
 
 // Setting up the threads
@@ -86,8 +105,6 @@ const setUpThreads = (data) => {
   threadsList.innerHTML = html;
 }
 
-
-
 // Pop ups with swipe to close
 const loginSwipeToClosePopup = app.popup.create({
   el: '.login-popup',
@@ -98,13 +115,15 @@ const loginSwipeToClosePopup = app.popup.create({
 // Open a dialog for adding a new thread
 $$(document).on("click", ".new-thread-dialog", function () {
   app.dialog.create({
-    content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list create-thread-form"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" id="title" name="title" placeholder="Thread Title" /> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Description"></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button create-thread" href="#">Create Thread</a> <a class="button create-thread-dialog" href="#">Cancel</a> </div> </form> </div>',
+    content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list" id="create-thread-form"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" id="title" name="title" placeholder="Thread Title" required validate/> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Description" required validate></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="create-thread" href="#">Create Thread</a> <a class="button" id="cancel-thread" href="#">Cancel</a> </div> </form> </div>',
     cssClass: 'dialog'
   }).open();
+
+  newThread();
 });
 
-// After adding it, close the thread dialog
-$$(document).on("click", ".create-thread-dialog", function () {
+// Close the thread dialog
+$$(document).on("click", "#cancel-thread", function () {
   app.dialog.close();
 });
 

@@ -13,7 +13,7 @@ var routes = [
     componentUrl: './pages/register.html',
   },
   {
-    path: '/thread/',
+    path: '/thread/:name/',
     componentUrl: './pages/thread.html',
   },
   // Default route (404 page). MUST BE THE LAST

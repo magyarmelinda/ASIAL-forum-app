@@ -8,7 +8,7 @@ db.collection('threads')
 }
 
 // Listen for Auth Status Changes
-auth.onAuthStateChanged(user => {
+  auth.onAuthStateChanged(user => {
   if (user) {
     setUpUI(user);
   } else {

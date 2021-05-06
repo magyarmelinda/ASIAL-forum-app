@@ -57,6 +57,7 @@ const newThread = () => {
 
 // Setting Up The Threads
 const setUpThreads = (data) => {
+  let count = 0;
   let html = '';
   data.forEach(doc => {
     const thread = doc.data();
@@ -79,8 +80,28 @@ const setUpThreads = (data) => {
       </li>  
     `;
     html += li;
+    count++;
   });
-  threadsList.innerHTML = html;
+  threadsList.innerHTML = (count == 0) ? noThreads() : html;
+}
+
+// Display Text When There Is No Thread Added
+const noThreads = () => {
+  return `
+    <div class="card demo-card-header-pic">
+      <div class="card-content card-content-padding">
+        <div class="list media-list no-ios-edges">
+          <ul>
+            <li class="item-content">
+              <div class="item-inner">
+                <div class="item-subtitle">No Threads Yet</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <p class="date">Be the first to create one!</p>
+      </div>
+    </div>`;
 }
 
 // Setting Up The Thread Details
@@ -122,12 +143,11 @@ const setUpComments = (id) => {
   .orderBy('added', 'desc')
   .onSnapshot(snapshot => {
     const commentsList = document.querySelector('.comments');
-    let html = '';
     let count = 0;
+    let html = '';
     snapshot.docs.forEach(doc => {
       const comment = doc.data();
       if(id == comment.thread) {
-        count++;
         const li = `
           <div class="card demo-card-header-pic" data-comment-id="${doc.id}">
             <div class="card-content card-content-padding">
@@ -142,19 +162,18 @@ const setUpComments = (id) => {
               </div>
               <p class="date" id="comment-date">${comment.added.toDate().toDateString()}  <i class="icon f7-icons size-18 delete-comment-dialog">trash</i></p>
             </div>
-          </div>
-        `;
+          </div>`;
         html += li;
+        count++;
       }
     });
-
     commentsList.innerHTML = (count == 0) ? noComments() : html;
   });
 }
 
 // Display Text When There Is No Comment Added
 const noComments = () => {
-  const html = `
+  return `
     <div class="card demo-card-header-pic">
       <div class="card-content card-content-padding">
         <div class="list media-list no-ios-edges">
@@ -168,10 +187,7 @@ const noComments = () => {
         </div>
         <p class="date">Be the first to share what you think!</p>
       </div>
-    </div>  
-  `;
-
-  return html;
+    </div>`;
 }
 
 // Event Listeners

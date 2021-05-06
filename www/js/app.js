@@ -127,6 +127,7 @@ const newComment = (threadId) => {
     if (app.input.validate('#description')) {
       db.collection('comments').add({
         thread: threadId,
+        user: firebase.auth().currentUser.uid,
         text: addCommentForm['description'].value,
         added: firebase.firestore.FieldValue.serverTimestamp()
       }).then(() => {
@@ -149,7 +150,7 @@ const setUpComments = (id) => {
       const comment = doc.data();
       if(id == comment.thread) {
         const li = `
-          <div class="card demo-card-header-pic" data-comment-id="${doc.id}">
+          <div class="card demo-card-header-pic" id="${comment.user}">
             <div class="card-content card-content-padding">
               <div class="list media-list no-ios-edges">
                 <ul>
@@ -160,7 +161,7 @@ const setUpComments = (id) => {
                   </li>
                 </ul>
               </div>
-              <p class="date" id="comment-date">${comment.added.toDate().toDateString()}  <i class="icon f7-icons size-18 delete-comment-dialog">trash</i></p>
+              <p class="date" id="comment-date">${comment.added.toDate().toDateString()}  <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-comment-id="${doc.id}">trash</i></span></p>
             </div>
           </div>`;
         html += li;
@@ -188,6 +189,18 @@ const noComments = () => {
         <p class="date">Be the first to share what you think!</p>
       </div>
     </div>`;
+}
+
+// Delete A Comment
+const deleteComment = (commentId) => {
+  let toDelete = db.collection('comments').where(firebase.firestore.FieldPath.documentId(), '==', commentId);
+  toDelete.get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const comment = doc.data();
+      if(firebase.auth().currentUser.uid == comment.user)
+        doc.ref.delete();
+    });
+  });
 }
 
 // Event Listeners
@@ -242,15 +255,17 @@ $$(document).on('click', '#cancel-comment', function () {
 });
 
 // Confirmation Dialog For Deleting a Thread
+
 $$(document).on('click', '.delete-thread-dialog', function () {
   app.dialog.confirm(' Are you sure you want to delete the thread?', '', function () {
-    app.dialog.alert('Thread Deleted', '');
+    // Delete thread function comes here
   });
 });
 
 // Confirmation Dialog For Deleting a Comment
 $$(document).on('click', '.delete-comment-dialog', function () {
+  let commentId = $$(this).data('comment-id');  
   app.dialog.confirm(' Are you sure you want to delete the comment?', '', function () {
-    app.dialog.alert('Comment Deleted', '');
+    deleteComment(commentId);
   });
 });

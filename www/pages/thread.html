@@ -68,8 +68,26 @@
         </div>
       </div>
     </div>
-    <div class="fab fab-right-bottom">
+    <div class="fab fab-right-bottom display" id="new-comment">
       <a href="#"><i class="icon f7-icons new-comment-dialog">bubble_left_fill</i></a>
     </div>
   </div>
 </template>
+
+<script>
+  return {
+    on: {
+      pageInit: function (e, page) {
+        const newCommentBtn = document.querySelector('#new-comment');
+        // Toggle UI Element
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            newCommentBtn.classList.remove('display');
+          } else {
+            newCommentBtn.classList.add('display');
+          }
+        });
+      }
+    }
+  }
+</script>

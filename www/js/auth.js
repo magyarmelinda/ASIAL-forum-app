@@ -1,6 +1,6 @@
 // Get Data 
-const getData = () => {
-db.collection('threads')
+const getThreads = () => {
+  db.collection('threads')
   .orderBy('created', 'desc')
   .onSnapshot(snapshot => {
     setUpThreads(snapshot.docs);

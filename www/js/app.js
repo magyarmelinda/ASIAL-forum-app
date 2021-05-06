@@ -44,6 +44,7 @@ const newThread = () => {
     //TO DO: picture
     if (app.input.validate('#title') && app.input.validate('#description')) {
       db.collection('threads').add({
+        user: firebase.auth().currentUser.uid,
         title: createThreadForm['title'].value,
         description: createThreadForm['description'].value,
         created: firebase.firestore.FieldValue.serverTimestamp()
@@ -75,7 +76,7 @@ const setUpThreads = (data) => {
           </a>
         </div>
         <div class="swipeout-actions-right">
-          <a href="#" class="delete-thread-dialog">Delete</a>
+          <a href="#" class="delete-thread-dialog" data-thread-id="${doc.id}">Delete</a>
         </div>
       </li>  
     `;
@@ -91,13 +92,11 @@ const noThreads = () => {
     <div class="card demo-card-header-pic">
       <div class="card-content card-content-padding">
         <div class="list media-list no-ios-edges">
-          <ul>
-            <li class="item-content">
+            <div class="item-content">
               <div class="item-inner">
                 <div class="item-subtitle">No Threads Yet</div>
               </div>
-            </li>
-          </ul>
+            </div>
         </div>
         <p class="date">Be the first to create one!</p>
       </div>
@@ -116,6 +115,18 @@ const setUpThreadDetails = (id) => {
         document.getElementById("thread-description").innerText = thread.description;
       });
     });
+}
+
+// Delete A Thread
+const deleteThread = (threadId) => {
+  let toDelete = db.collection('threads').where(firebase.firestore.FieldPath.documentId(), '==', threadId);
+  toDelete.get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const thread = doc.data();
+      if(firebase.auth().currentUser.uid == thread.user)
+        doc.ref.delete();
+    });
+  });
 }
 
 // Add New Comment
@@ -257,8 +268,10 @@ $$(document).on('click', '#cancel-comment', function () {
 // Confirmation Dialog For Deleting a Thread
 
 $$(document).on('click', '.delete-thread-dialog', function () {
+  let id = $$(this).data('thread-id');  
+  console.log(id);
   app.dialog.confirm(' Are you sure you want to delete the thread?', '', function () {
-    // Delete thread function comes here
+    deleteThread(id);
   });
 });
 

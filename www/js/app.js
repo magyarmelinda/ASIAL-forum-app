@@ -107,7 +107,7 @@ $$(document).on('click', '.thread-details', function () {
 // Reload Home Page
 $$(document).on('click', '.icon-back', function () {
   $$(document).on('page:init', '.page[data-name="home"]', function () {
-  window.location.reload();
+    window.location.reload();
   });
 });
 

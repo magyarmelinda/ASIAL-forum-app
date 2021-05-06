@@ -97,11 +97,90 @@ const setUpThreadDetails = (id) => {
     });
 }
 
+// Add New Comment
+const newComment = (threadId) => {
+  $$(document).on('click', '#add-comment', function () {
+    const addCommentForm = document.querySelector('#add-comment-form');
+
+    //TO DO: picture
+    if (app.input.validate('#description')) {
+      db.collection('comments').add({
+        thread: threadId,
+        text: addCommentForm['description'].value,
+        added: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        app.dialog.close();
+        addCommentForm.reset();
+      });
+    }
+  });
+}
+
+// Setting Up The Comments
+const setUpComments = (id) => {
+  db.collection('comments')
+  .orderBy('added', 'desc')
+  .onSnapshot(snapshot => {
+    const commentsList = document.querySelector('.comments');
+    let html = '';
+    let count = 0;
+    snapshot.docs.forEach(doc => {
+      const comment = doc.data();
+      if(id == comment.thread) {
+        count++;
+        const li = `
+          <div class="card demo-card-header-pic" data-comment-id="${doc.id}">
+            <div class="card-content card-content-padding">
+              <div class="list media-list no-ios-edges">
+                <ul>
+                  <li class="item-content">
+                    <div class="item-inner">
+                      <div class="item-subtitle" id="comment-description">${comment.text}</div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <p class="date" id="comment-date">${comment.added.toDate().toDateString()}  <i class="icon f7-icons size-18 delete-comment-dialog">trash</i></p>
+            </div>
+          </div>
+        `;
+        html += li;
+      }
+    });
+
+    commentsList.innerHTML = (count == 0) ? noComments() : html;
+  });
+}
+
+// Display Text When There Is No Comment Added
+const noComments = () => {
+  const html = `
+    <div class="card demo-card-header-pic">
+      <div class="card-content card-content-padding">
+        <div class="list media-list no-ios-edges">
+          <ul>
+            <li class="item-content">
+              <div class="item-inner">
+                <div class="item-subtitle">No Comments Yet</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <p class="date">Be the first to share what you think!</p>
+      </div>
+    </div>  
+  `;
+
+  return html;
+}
+
 // Event Listeners
 // Get Data for Thread Details Page
 $$(document).on('click', '.thread-details', function () {
   const id = $$(this).data('thread-id');
   setUpThreadDetails(id);
+  setUpComments(id);
+  newComment(id);
 })
 
 // Reload Home Page
@@ -136,13 +215,13 @@ $$(document).on('click', '#cancel-thread', function () {
 // Open a Dialog For Adding a New Comment
 $$(document).on('click', '.new-comment-dialog', function () {
   app.dialog.create({
-    content: '<div class="page-content login-screen-content"> <form class="list"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea name="description" placeholder="Write your comment here"></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button popup-close submit-comment-dialog" href="#">Submit</a>  <a class="button submit-comment-dialog" href="#">Cancel</a></div> </form> </div>',
+    content: '<div class="page-content login-screen-content"> <form class="list" id="add-comment-form"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Write your comment here" required validate></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="add-comment" href="#">Submit</a>  <a class="button" id="cancel-comment" href="#">Cancel</a></div> </form> </div>',
     cssClass: 'dialog'
   }).open();
 });
 
-// After Submission Close Comment Dialog
-$$(document).on('click', '.submit-comment-dialog', function () {
+// Close The Comment Dialog
+$$(document).on('click', '#cancel-comment', function () {
   app.dialog.close();
 });
 

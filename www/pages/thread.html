@@ -36,13 +36,11 @@
     on: {
       pageInit: function (e, page) {
         const newCommentBtn = document.querySelector('#new-comment');
+
         // Toggle UI Element
         auth.onAuthStateChanged(user => {
-          if (user) {
-            newCommentBtn.classList.remove('display');
-          } else {
-            newCommentBtn.classList.add('display');
-          }
+          (user) ? newCommentBtn.classList.remove('display')
+          : newCommentBtn.classList.add('display');
         });
       }
     }

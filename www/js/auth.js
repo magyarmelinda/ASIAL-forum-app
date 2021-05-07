@@ -1,4 +1,4 @@
-// Get Data 
+// Get Threads Data 
 const getThreads = () => {
   db.collection('threads')
   .orderBy('created', 'desc')

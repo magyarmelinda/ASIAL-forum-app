@@ -35,20 +35,50 @@ const setUpUI = (user) => {
   }
 }
 
+// Upload Thread/Comment Image to Firebase Storage
+const uploadImage = (folder, element, id, component) => {
+  const ref = firebase.storage().ref(folder);
+  const file = document.querySelector(element).files[0];
+  const name = id + '.jpg';
+  const metadata = { contentType: file.type };
+
+  ref.child(name).put(file, metadata)
+  .then(snapshot => snapshot.ref.getDownloadURL())
+  .then(url => {
+    document.getElementById(component).src = url;
+  }).catch((error) => {
+    console.error(error);
+  });
+}
+
+// Delete Thread/Comment's Picture
+const deleteImage = (type, id) => {
+  const ref = firebase.storage().ref(type).child(id + '.jpg');
+
+  // Delete the file
+  ref.delete().then(() => {
+    // File Deleted Successfully
+  }).catch((error) => {
+    console.error(error);
+  });
+}
+
 // Create New Thread
 const newThread = () => {
   const createThreadForm = document.querySelector('#create-thread-form');
   const createThreadBtn = document.querySelector('#create-thread');
 
   createThreadBtn.addEventListener('click', () => {
-    //TO DO: picture
-    if (app.input.validate('#title') && app.input.validate('#description')) {
+    if (app.input.validate('#title') && 
+    app.input.validate('#description') && 
+    app.input.validate('#thread-img')) {
       db.collection('threads').add({
         user: firebase.auth().currentUser.uid,
         title: createThreadForm['title'].value,
         description: createThreadForm['description'].value,
         created: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
+      }).then(doc => {
+        uploadImage('threads/', '#thread-img-upload', doc.id, 'thread-details-img');
         app.dialog.close();
         createThreadForm.reset();
       });
@@ -66,7 +96,7 @@ const setUpThreads = (data) => {
       <li class="swipeout">
         <div class="swipeout-content">
           <a href="/thread/${doc.id}/" data-thread-id="${doc.id}" class="item-link item-content thread-details">
-            <div class="item-media"><img src="http://placehold.jp/40x40.png" width="44"/></div>
+            <div class="item-media"><img id="thread-details-img" width="44"/></div>
             <div class="item-inner">
               <div class="item-title-row">
                 <div class="item-title">${thread.title}</div>
@@ -83,24 +113,9 @@ const setUpThreads = (data) => {
     html += li;
     count++;
   });
-  threadsList.innerHTML = (count == 0) ? noThreads() : html;
-}
-
-// Display Text When There Is No Thread Added
-const noThreads = () => {
-  return `
-    <div class="card demo-card-header-pic">
-      <div class="card-content card-content-padding">
-        <div class="list media-list no-ios-edges">
-            <div class="item-content">
-              <div class="item-inner">
-                <div class="item-subtitle">No Threads Yet</div>
-              </div>
-            </div>
-        </div>
-        <p class="date">Be the first to create one!</p>
-      </div>
-    </div>`;
+  threadsList.innerHTML = (count == 0) ? 
+  noContent('No Threads Yet', 'Be the first to create one!') 
+  : html;
 }
 
 // Setting Up The Thread Details
@@ -117,31 +132,20 @@ const setUpThreadDetails = (id) => {
     });
 }
 
-// Delete A Thread
-const deleteThread = (threadId) => {
-  let toDelete = db.collection('threads').where(firebase.firestore.FieldPath.documentId(), '==', threadId);
-  toDelete.get().then(snapshot => {
-    snapshot.forEach(doc => {
-      const thread = doc.data();
-      if(firebase.auth().currentUser.uid == thread.user)
-        doc.ref.delete();
-    });
-  });
-}
-
 // Add New Comment
-const newComment = (threadId) => {
+const newComment = (id) => {
   $$(document).on('click', '#add-comment', function () {
     const addCommentForm = document.querySelector('#add-comment-form');
 
-    //TO DO: picture
-    if (app.input.validate('#description')) {
+    if (app.input.validate('#description') && 
+    app.input.validate('#comment-img')) {
       db.collection('comments').add({
-        thread: threadId,
+        thread: id,
         user: firebase.auth().currentUser.uid,
         text: addCommentForm['description'].value,
         added: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
+      }).then((doc) => {
+        uploadImage('comments/', '#comment-img-upload', doc.id, 'comment-details-img');
         app.dialog.close();
         addCommentForm.reset();
       });
@@ -172,46 +176,39 @@ const setUpComments = (id) => {
                   </li>
                 </ul>
               </div>
-              <p class="date" id="comment-date">${comment.added.toDate().toDateString()}  <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-comment-id="${doc.id}">trash</i></span></p>
+              <p class="date" id="comment-date">${comment.added.toDate().toDateString()} <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-comment-id="${doc.id}">trash</i></span></p>
             </div>
           </div>`;
         html += li;
         count++;
       }
     });
-    commentsList.innerHTML = (count == 0) ? noComments() : html;
+    commentsList.innerHTML = (count == 0) ? 
+    noContent('No Comments Yet', 'Be the first to share what you think!') 
+    : html;
   });
 }
 
-// Display Text When There Is No Comment Added
-const noComments = () => {
-  return `
-    <div class="card demo-card-header-pic">
-      <div class="card-content card-content-padding">
-        <div class="list media-list no-ios-edges">
-          <ul>
-            <li class="item-content">
-              <div class="item-inner">
-                <div class="item-subtitle">No Comments Yet</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <p class="date">Be the first to share what you think!</p>
-      </div>
-    </div>`;
-}
-
-// Delete A Comment
-const deleteComment = (commentId) => {
-  let toDelete = db.collection('comments').where(firebase.firestore.FieldPath.documentId(), '==', commentId);
+// Delete A Comment or A Thread
+const deleteContent = (collection, id) => {
+  let toDelete = db.collection(collection).where(firebase.firestore.FieldPath.documentId(), '==', id);
   toDelete.get().then(snapshot => {
     snapshot.forEach(doc => {
-      const comment = doc.data();
-      if(firebase.auth().currentUser.uid == comment.user)
+      const data = doc.data();
+      if(firebase.auth().currentUser.uid == data.user)
         doc.ref.delete();
     });
   });
+}
+
+// Display Text When There Is No Thread/Comment Added
+const noContent = (title, text) => {
+  return `
+    <div class="card-content card-content-padding">
+      <div class="item-subtitle">${title}</div>    
+      <p class="date">${text}</p>
+    </div>
+  `;
 }
 
 // Event Listeners
@@ -240,7 +237,7 @@ const loginSwipeToClosePopup = app.popup.create({
 // Open a Dialog For Adding a New Thread
 $$('.new-thread-dialog').on('click', function () {
   app.dialog.create({
-    content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list" id="create-thread-form"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" id="title" name="title" placeholder="Thread Title" required validate/> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Description" required validate></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="create-thread" href="#">Create Thread</a> <a class="button" id="cancel-thread" href="#">Cancel</a> </div> </form> </div>',
+    content: ' <div class="page-content login-screen-content"> <div class="block-title">New Topic</div> <form class="list" id="create-thread-form"> <div class="list" id="dialog-list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <input type="text" id="title" name="title" placeholder="Thread Title" required validate/> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Description" required validate></textarea> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <input type="file" id="thread-img-upload" required validate> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="create-thread" href="#">Create Thread</a> <a class="button" id="cancel-thread" href="#">Cancel</a> </div> </form> </div>',
     cssClass: 'dialog'
   }).open();
 
@@ -255,7 +252,7 @@ $$(document).on('click', '#cancel-thread', function () {
 // Open a Dialog For Adding a New Comment
 $$(document).on('click', '.new-comment-dialog', function () {
   app.dialog.create({
-    content: '<div class="page-content login-screen-content"> <form class="list" id="add-comment-form"> <div class="list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Write your comment here" required validate></textarea> </div> </div> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="add-comment" href="#">Submit</a>  <a class="button" id="cancel-comment" href="#">Cancel</a></div> </form> </div>',
+    content: '<div class="page-content login-screen-content"> <form class="list" id="add-comment-form"> <div class="list" id="dialog-list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Write your comment here" required validate></textarea> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <input type="file" id="comment-img-upload" required validate> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="add-comment" href="#">Submit</a>  <a class="button" id="cancel-comment" href="#">Cancel</a></div> </form> </div>',
     cssClass: 'dialog'
   }).open();
 });
@@ -266,19 +263,19 @@ $$(document).on('click', '#cancel-comment', function () {
 });
 
 // Confirmation Dialog For Deleting a Thread
-
 $$(document).on('click', '.delete-thread-dialog', function () {
   let id = $$(this).data('thread-id');  
-  console.log(id);
   app.dialog.confirm(' Are you sure you want to delete the thread?', '', function () {
-    deleteThread(id);
+    deleteContent('threads', id);
+    deleteImage('threads/', id);
   });
 });
 
 // Confirmation Dialog For Deleting a Comment
 $$(document).on('click', '.delete-comment-dialog', function () {
-  let commentId = $$(this).data('comment-id');  
+  let id = $$(this).data('comment-id');  
   app.dialog.confirm(' Are you sure you want to delete the comment?', '', function () {
-    deleteComment(commentId);
+    deleteContent('comments', id);
+    deleteImage('comments/', id);
   });
 });

@@ -15,7 +15,7 @@
     <!-- Scrollable Page Content-->
     <div class="page-content">
       <div class="card demo-card-header-pic">
-        <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)"
+        <div id="thread-img" style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)"
           class="card-header align-items-flex-end"></div>
         <div class="card-content card-content-padding">
           <p id="thread-description"></p>
@@ -39,7 +39,7 @@
 
         // Toggle UI Element
         auth.onAuthStateChanged(user => {
-          (user) ? newCommentBtn.classList.remove('display')
+          user ? newCommentBtn.classList.remove('display')
           : newCommentBtn.classList.add('display');
         });
       }

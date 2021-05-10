@@ -37,24 +37,24 @@ const setUpUI = (user) => {
 
 // Upload Thread/Comment Image to Firebase Storage
 const uploadImage = (folder, element, id, type) => {
-  const ref = firebase.storage().ref(folder);
   let file = document.querySelector(element).files[0];
 
-  if(type == 'comment' && file == undefined) {
-    // TO DO: correcting
-    document.querySelector(element).src = 'data:image/svg+xml;base64,PHN2ZyBpZD0iQ2FwYV8xIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTQ0NC4zOTQgMy45OTZoLTI4NS4wNzJjLTM3LjE4MyAwLTY3LjYwNiAzMC40MjMtNjcuNjA2IDY3LjYwNnYyMy4wMDRoMjU3Ljg3MWMzNy4xODMgMCA2Ny42MDYgMzAuNDIzIDY3LjYwNiA2Ny42MDZ2MTY4LjU0N2gyNy4yMDFjMzcuMTgzIDAgNjcuNjA2LTMwLjQyMyA2Ny42MDYtNjcuNjA2di0xOTEuNTUxYzAtMzcuMTg0LTMwLjQyMy02Ny42MDYtNjcuNjA2LTY3LjYwNnoiIGZpbGw9IiM2YzdlZDYiLz48cGF0aCBkPSJtMzk2LjQ2MSA5MS41MTVoLTI4NS4wNzJjLTYuODM2IDAtMTMuNDQxIDEuMDM2LTE5LjY3MyAyLjk0NnYuMTQ1aDI1Ny44NzFjMzcuMTgzIDAgNjcuNjA2IDMwLjQyMyA2Ny42MDYgNjcuNjA2djE2OC41NDdoMjcuMmM2LjgzNiAwIDEzLjQ0MS0xLjAzNiAxOS42NzMtMi45NDZ2LTE2OC42OTJjLjAwMS0zNy4xODMtMzAuNDIyLTY3LjYwNi02Ny42MDUtNjcuNjA2eiIgZmlsbD0iIzRmNjdkMiIvPjxwYXRoIGQ9Im0zNTIuNjc4IDkxLjUxNWgtMjg1LjA3MmMtMzcuMTgzIDAtNjcuNjA2IDMwLjQyMy02Ny42MDYgNjcuNjA2djE5MS41NWMwIDM3LjE4MyAzMC40MjMgNjcuNjA2IDY3LjYwNiA2Ny42MDZoMTcxLjA5NmM3LjMzNSAwIDEyLjgxMSA2LjgyNiAxMS4xMzMgMTMuOTY2LTQuNTM3IDE5LjMxNy0xMS40OCAzOS43NDUtMjEuNzQ0IDYwLjY4Ni00LjYwOSA5LjQwNSA1Ljg3NiAxOC45NjYgMTQuNzgyIDEzLjQ1NCAyNS43NTEtMTUuOTM3IDYyLjM4OS00Mi42MSA5My4yNDQtODAuMzE3IDQuMDU2LTQuOTU3IDEwLjE1Ni03Ljc5IDE2LjU2MS03Ljc5IDM3LjE4MyAwIDY3LjYwNi0zMC40MjMgNjcuNjA2LTY3LjYwNnYtMTkxLjU1YzAtMzcuMTgyLTMwLjQyMy02Ny42MDUtNjcuNjA2LTY3LjYwNXoiIGZpbGw9IiM2MGI4ZmUiLz48cGF0aCBkPSJtMjkzLjYxOCA0MzIuMjQzYzEuNjc3LTcuMTQxLTMuNzk4LTEzLjk2Ni0xMS4xMzMtMTMuOTY2aC00My43ODNjNy4zMzUgMCAxMi44MSA2LjgyNSAxMS4xMzMgMTMuOTY2LTQuNTM3IDE5LjMxNy0xMS40OCAzOS43NDUtMjEuNzQ0IDYwLjY4Ni00LjYwOSA5LjQwNSA1Ljg3NiAxOC45NjYgMTQuNzgyIDEzLjQ1NCA5Ljg4LTYuMTE1IDIxLjM2NS0xMy44MTYgMzMuNTA5LTIzLjEwOCA3LjgzMi0xNy41NjMgMTMuMzk5LTM0LjY5NiAxNy4yMzYtNTEuMDMyeiIgZmlsbD0iIzIzYThmZSIvPjxwYXRoIGQ9Im00My43ODMgMzUwLjY3MXYtMTkxLjU1YzAtMzcuMTgzIDMwLjQyMy02Ny42MDYgNjcuNjA2LTY3LjYwNmgtNDMuNzgzYy0zNy4xODMgMC02Ny42MDYgMzAuNDIzLTY3LjYwNiA2Ny42MDZ2MTkxLjU1YzAgMzcuMTgzIDMwLjQyMyA2Ny42MDYgNjcuNjA2IDY3LjYwNmg0My43ODNjLTM3LjE4NCAwLTY3LjYwNi0zMC40MjItNjcuNjA2LTY3LjYwNnoiIGZpbGw9IiMyM2E4ZmUiLz48ZyBmaWxsPSIjZGZlYmZhIj48Y2lyY2xlIGN4PSI5My43MTQiIGN5PSIyNjAuMzk3IiByPSIyMi40MzQiLz48Y2lyY2xlIGN4PSIxNjYuMTc0IiBjeT0iMjYwLjM5NyIgcj0iMjIuNDM0Ii8+PGNpcmNsZSBjeD0iMjM4LjYzMyIgY3k9IjI2MC4zOTciIHI9IjIyLjQzNCIvPjxjaXJjbGUgY3g9IjMxMS4wOTMiIGN5PSIyNjAuMzk3IiByPSIyMi40MzQiLz48L2c+PHBhdGggZD0ibTkzLjcxNCAyNjAuMzk3YzAtOC4zMDIgNC41MTQtMTUuNTQ2IDExLjIxNy0xOS40MjUtMy4zMDEtMS45MS03LjEyOS0zLjAwOS0xMS4yMTctMy4wMDktMTIuMzkgMC0yMi40MzQgMTAuMDQ0LTIyLjQzNCAyMi40MzRzMTAuMDQ0IDIyLjQzNCAyMi40MzQgMjIuNDM0YzQuMDg4IDAgNy45MTctMS4wOTkgMTEuMjE3LTMuMDA5LTYuNzA0LTMuODc5LTExLjIxNy0xMS4xMjMtMTEuMjE3LTE5LjQyNXoiIGZpbGw9IiNiMWRiZmMiLz48cGF0aCBkPSJtMTY2LjE3NCAyNjAuMzk3YzAtOC4zMDIgNC41MTQtMTUuNTQ2IDExLjIxNy0xOS40MjUtMy4zMDEtMS45MS03LjEyOS0zLjAwOS0xMS4yMTctMy4wMDktMTIuMzkgMC0yMi40MzQgMTAuMDQ0LTIyLjQzNCAyMi40MzRzMTAuMDQ0IDIyLjQzNCAyMi40MzQgMjIuNDM0YzQuMDg4IDAgNy45MTYtMS4wOTkgMTEuMjE3LTMuMDA5LTYuNzA0LTMuODc5LTExLjIxNy0xMS4xMjMtMTEuMjE3LTE5LjQyNXoiIGZpbGw9IiNiMWRiZmMiLz48cGF0aCBkPSJtMjM4LjYzMyAyNjAuMzk3YzAtOC4zMDIgNC41MTQtMTUuNTQ2IDExLjIxNy0xOS40MjUtMy4zMDEtMS45MS03LjEzLTMuMDA5LTExLjIxNy0zLjAwOS0xMi4zOSAwLTIyLjQzNCAxMC4wNDQtMjIuNDM0IDIyLjQzNHMxMC4wNDQgMjIuNDM0IDIyLjQzNCAyMi40MzRjNC4wODggMCA3LjkxNy0xLjA5OSAxMS4yMTctMy4wMDktNi43MDMtMy44NzktMTEuMjE3LTExLjEyMy0xMS4yMTctMTkuNDI1eiIgZmlsbD0iI2IxZGJmYyIvPjxwYXRoIGQ9Im0zMTEuMDkzIDI2MC4zOTdjMC04LjMwMiA0LjUxMy0xNS41NDYgMTEuMjE3LTE5LjQyNS0zLjMwMS0xLjkxLTcuMTMtMy4wMDktMTEuMjE3LTMuMDA5LTEyLjM5IDAtMjIuNDM0IDEwLjA0NC0yMi40MzQgMjIuNDM0czEwLjA0NCAyMi40MzQgMjIuNDM0IDIyLjQzNGM0LjA4OCAwIDcuOTE3LTEuMDk5IDExLjIxNy0zLjAwOS02LjcwNC0zLjg3OS0xMS4yMTctMTEuMTIzLTExLjIxNy0xOS40MjV6IiBmaWxsPSIjYjFkYmZjIi8+PC9zdmc+';
-    file = document.querySelector(element).src;
-  }
+  if (file != undefined) {
+    const ref = firebase.storage().ref(folder);
     const name = id + '.jpg';
-  const metadata = { contentType: file.type };
+    const source = '#' + id + '-img';
+    const metadata = { contentType: file.type };
 
-  ref.child(name).put(file, metadata)
-    .then(snapshot => snapshot.ref.getDownloadURL())
-    .then(url => {
-      // console.log(url);
-    }).catch(error => {
-      console.log(error);
-    });
+    ref.child(name).put(file, metadata)
+      .then(snapshot => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        if (progress == 100)
+          snapshot.ref.getDownloadURL().then(url => document.querySelector(source).src = url);
+
+      }).catch(error => {
+        console.log(error);
+      });
+  }
 }
 
 // Display Thread/Comment image
@@ -65,11 +65,11 @@ const displayImage = (folder, id, element, background) => {
   ref.child(name)
     .getDownloadURL()
     .then(url => {
-      (background) ? 
-      document.getElementById(element).style.backgroundImage = 'url(' + url + ')' 
-      : document.getElementById(element).src = url;
-    }).catch( () => {
-      document.getElementById(element).src = 'data:image/svg+xml;base64,PHN2ZyBpZD0iQ2FwYV8xIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHdpZHRoPSI1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTQ0NC4zOTQgMy45OTZoLTI4NS4wNzJjLTM3LjE4MyAwLTY3LjYwNiAzMC40MjMtNjcuNjA2IDY3LjYwNnYyMy4wMDRoMjU3Ljg3MWMzNy4xODMgMCA2Ny42MDYgMzAuNDIzIDY3LjYwNiA2Ny42MDZ2MTY4LjU0N2gyNy4yMDFjMzcuMTgzIDAgNjcuNjA2LTMwLjQyMyA2Ny42MDYtNjcuNjA2di0xOTEuNTUxYzAtMzcuMTg0LTMwLjQyMy02Ny42MDYtNjcuNjA2LTY3LjYwNnoiIGZpbGw9IiM2YzdlZDYiLz48cGF0aCBkPSJtMzk2LjQ2MSA5MS41MTVoLTI4NS4wNzJjLTYuODM2IDAtMTMuNDQxIDEuMDM2LTE5LjY3MyAyLjk0NnYuMTQ1aDI1Ny44NzFjMzcuMTgzIDAgNjcuNjA2IDMwLjQyMyA2Ny42MDYgNjcuNjA2djE2OC41NDdoMjcuMmM2LjgzNiAwIDEzLjQ0MS0xLjAzNiAxOS42NzMtMi45NDZ2LTE2OC42OTJjLjAwMS0zNy4xODMtMzAuNDIyLTY3LjYwNi02Ny42MDUtNjcuNjA2eiIgZmlsbD0iIzRmNjdkMiIvPjxwYXRoIGQ9Im0zNTIuNjc4IDkxLjUxNWgtMjg1LjA3MmMtMzcuMTgzIDAtNjcuNjA2IDMwLjQyMy02Ny42MDYgNjcuNjA2djE5MS41NWMwIDM3LjE4MyAzMC40MjMgNjcuNjA2IDY3LjYwNiA2Ny42MDZoMTcxLjA5NmM3LjMzNSAwIDEyLjgxMSA2LjgyNiAxMS4xMzMgMTMuOTY2LTQuNTM3IDE5LjMxNy0xMS40OCAzOS43NDUtMjEuNzQ0IDYwLjY4Ni00LjYwOSA5LjQwNSA1Ljg3NiAxOC45NjYgMTQuNzgyIDEzLjQ1NCAyNS43NTEtMTUuOTM3IDYyLjM4OS00Mi42MSA5My4yNDQtODAuMzE3IDQuMDU2LTQuOTU3IDEwLjE1Ni03Ljc5IDE2LjU2MS03Ljc5IDM3LjE4MyAwIDY3LjYwNi0zMC40MjMgNjcuNjA2LTY3LjYwNnYtMTkxLjU1YzAtMzcuMTgyLTMwLjQyMy02Ny42MDUtNjcuNjA2LTY3LjYwNXoiIGZpbGw9IiM2MGI4ZmUiLz48cGF0aCBkPSJtMjkzLjYxOCA0MzIuMjQzYzEuNjc3LTcuMTQxLTMuNzk4LTEzLjk2Ni0xMS4xMzMtMTMuOTY2aC00My43ODNjNy4zMzUgMCAxMi44MSA2LjgyNSAxMS4xMzMgMTMuOTY2LTQuNTM3IDE5LjMxNy0xMS40OCAzOS43NDUtMjEuNzQ0IDYwLjY4Ni00LjYwOSA5LjQwNSA1Ljg3NiAxOC45NjYgMTQuNzgyIDEzLjQ1NCA5Ljg4LTYuMTE1IDIxLjM2NS0xMy44MTYgMzMuNTA5LTIzLjEwOCA3LjgzMi0xNy41NjMgMTMuMzk5LTM0LjY5NiAxNy4yMzYtNTEuMDMyeiIgZmlsbD0iIzIzYThmZSIvPjxwYXRoIGQ9Im00My43ODMgMzUwLjY3MXYtMTkxLjU1YzAtMzcuMTgzIDMwLjQyMy02Ny42MDYgNjcuNjA2LTY3LjYwNmgtNDMuNzgzYy0zNy4xODMgMC02Ny42MDYgMzAuNDIzLTY3LjYwNiA2Ny42MDZ2MTkxLjU1YzAgMzcuMTgzIDMwLjQyMyA2Ny42MDYgNjcuNjA2IDY3LjYwNmg0My43ODNjLTM3LjE4NCAwLTY3LjYwNi0zMC40MjItNjcuNjA2LTY3LjYwNnoiIGZpbGw9IiMyM2E4ZmUiLz48ZyBmaWxsPSIjZGZlYmZhIj48Y2lyY2xlIGN4PSI5My43MTQiIGN5PSIyNjAuMzk3IiByPSIyMi40MzQiLz48Y2lyY2xlIGN4PSIxNjYuMTc0IiBjeT0iMjYwLjM5NyIgcj0iMjIuNDM0Ii8+PGNpcmNsZSBjeD0iMjM4LjYzMyIgY3k9IjI2MC4zOTciIHI9IjIyLjQzNCIvPjxjaXJjbGUgY3g9IjMxMS4wOTMiIGN5PSIyNjAuMzk3IiByPSIyMi40MzQiLz48L2c+PHBhdGggZD0ibTkzLjcxNCAyNjAuMzk3YzAtOC4zMDIgNC41MTQtMTUuNTQ2IDExLjIxNy0xOS40MjUtMy4zMDEtMS45MS03LjEyOS0zLjAwOS0xMS4yMTctMy4wMDktMTIuMzkgMC0yMi40MzQgMTAuMDQ0LTIyLjQzNCAyMi40MzRzMTAuMDQ0IDIyLjQzNCAyMi40MzQgMjIuNDM0YzQuMDg4IDAgNy45MTctMS4wOTkgMTEuMjE3LTMuMDA5LTYuNzA0LTMuODc5LTExLjIxNy0xMS4xMjMtMTEuMjE3LTE5LjQyNXoiIGZpbGw9IiNiMWRiZmMiLz48cGF0aCBkPSJtMTY2LjE3NCAyNjAuMzk3YzAtOC4zMDIgNC41MTQtMTUuNTQ2IDExLjIxNy0xOS40MjUtMy4zMDEtMS45MS03LjEyOS0zLjAwOS0xMS4yMTctMy4wMDktMTIuMzkgMC0yMi40MzQgMTAuMDQ0LTIyLjQzNCAyMi40MzRzMTAuMDQ0IDIyLjQzNCAyMi40MzQgMjIuNDM0YzQuMDg4IDAgNy45MTYtMS4wOTkgMTEuMjE3LTMuMDA5LTYuNzA0LTMuODc5LTExLjIxNy0xMS4xMjMtMTEuMjE3LTE5LjQyNXoiIGZpbGw9IiNiMWRiZmMiLz48cGF0aCBkPSJtMjM4LjYzMyAyNjAuMzk3YzAtOC4zMDIgNC41MTQtMTUuNTQ2IDExLjIxNy0xOS40MjUtMy4zMDEtMS45MS03LjEzLTMuMDA5LTExLjIxNy0zLjAwOS0xMi4zOSAwLTIyLjQzNCAxMC4wNDQtMjIuNDM0IDIyLjQzNHMxMC4wNDQgMjIuNDM0IDIyLjQzNCAyMi40MzRjNC4wODggMCA3LjkxNy0xLjA5OSAxMS4yMTctMy4wMDktNi43MDMtMy44NzktMTEuMjE3LTExLjEyMy0xMS4yMTctMTkuNDI1eiIgZmlsbD0iI2IxZGJmYyIvPjxwYXRoIGQ9Im0zMTEuMDkzIDI2MC4zOTdjMC04LjMwMiA0LjUxMy0xNS41NDYgMTEuMjE3LTE5LjQyNS0zLjMwMS0xLjkxLTcuMTMtMy4wMDktMTEuMjE3LTMuMDA5LTEyLjM5IDAtMjIuNDM0IDEwLjA0NC0yMi40MzQgMjIuNDM0czEwLjA0NCAyMi40MzQgMjIuNDM0IDIyLjQzNGM0LjA4OCAwIDcuOTE3LTEuMDk5IDExLjIxNy0zLjAwOS02LjcwNC0zLjg3OS0xMS4yMTctMTEuMTIzLTExLjIxNy0xOS40MjV6IiBmaWxsPSIjYjFkYmZjIi8+PC9zdmc+';
+      (background) ?
+        document.getElementById(element).style.backgroundImage = 'url(' + url + ')'
+        : document.getElementById(element).src = url;
+    }).catch(() => {
+      document.getElementById(id + '-img').src = '/assets/icons/comments-icon.png';
     });
 }
 
@@ -93,7 +93,8 @@ const newThread = () => {
   createThreadBtn.addEventListener('click', () => {
     if (app.input.validate('#title') &&
       app.input.validate('#description') &&
-      app.input.validate('#thread-img')) {
+      app.input.validate('#thread-img-upload')) {
+      createThreadBtn.classList.add('disabled');
       db.collection('threads').add({
         user: firebase.auth().currentUser.uid,
         title: createThreadForm['title'].value,
@@ -103,6 +104,7 @@ const newThread = () => {
         uploadImage('threads/', '#thread-img-upload', doc.id);
         app.dialog.close();
         createThreadForm.reset();
+        getThreads();
       });
     }
   });
@@ -159,10 +161,11 @@ const setUpThreadDetails = (id) => {
 // Add New Comment
 const newComment = (id) => {
   $$(document).on('click', '#add-comment', function () {
+    const addCommentBtn = document.querySelector('#add-comment');
     const addCommentForm = document.querySelector('#add-comment-form');
 
-    if (app.input.validate('#description') &&
-      app.input.validate('#comment-img')) {
+    if (app.input.validate('#description')) {
+      addCommentBtn.classList.add('disabled');
       db.collection('comments').add({
         thread: id,
         user: firebase.auth().currentUser.uid,
@@ -191,7 +194,7 @@ const setUpComments = (id) => {
           const li = `
             <div class="card demo-card-header-pic" id="${comment.user}">
               <div class="card-content card-content-padding">
-                <img id="${doc.id}-img" class="float-left" width="40" height="40"/>
+                <img id="${doc.id}-img" class="float-left enlarge-image" width="40" height="40"/>
                 <p class="item-subtitle" id="comment-description">${comment.text}</p>
               </div>
               <p class="date" id="comment-date">${comment.added.toDate().toDateString()} <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-comment-id="${doc.id}">trash</i></span></p>
@@ -270,7 +273,7 @@ $$(document).on('click', '#cancel-thread', function () {
 // Open a Dialog For Adding a New Comment
 $$(document).on('click', '.new-comment-dialog', function () {
   app.dialog.create({
-    content: '<div class="page-content login-screen-content"> <form class="list" id="add-comment-form"> <div class="list" id="dialog-list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Write your comment here" required validate></textarea> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <input type="file" id="comment-img-upload" required validate> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="add-comment" href="#">Submit</a>  <a class="button" id="cancel-comment" href="#">Cancel</a></div> </form> </div>',
+    content: '<div class="page-content login-screen-content"> <form class="list" id="add-comment-form"> <div class="list" id="dialog-list"> <ul> <li class="item-content item-input"> <div class="item-inner"> <div class="item-input-wrap"> <textarea id="description" name="description" placeholder="Write your comment here" required validate></textarea> </div> </div> </li> <li class="item-content item-input"> <div class="item-inner"> <input type="file" id="comment-img-upload"> </li> </ul> </div> <div class="row display-flex justify-content-center"> <a class="button" id="add-comment" href="#">Submit</a>  <a class="button" id="cancel-comment" href="#">Cancel</a></div> </form> </div>',
     cssClass: 'dialog'
   }).open();
 });
@@ -296,4 +299,15 @@ $$(document).on('click', '.delete-comment-dialog', function () {
     deleteContent('comments', id);
     deleteImage('comments/', id);
   });
+});
+
+// Displaying Modal to Enlarge Image
+$$(document).on('click', '.enlarge-image', function () {
+  const modal = document.querySelector('#enlarge-image');
+  const modalImage = document.querySelector('#modal-image');
+  const span = document.getElementsByClassName('close')[0];
+
+  modal.style.display = "block";
+  modalImage.src = this.src;
+  span.onclick = () => modal.style.display = "none";
 });

@@ -5,7 +5,7 @@
       <div class="navbar-bg"></div>
       <div class="navbar-inner">
         <div class="left">
-          <a href="/" class="link icon-only">
+          <a href="#" class="link back icon-only">
             <i class="icon icon-back"></i>
           </a>
           <div class="title" id="thread-title"></div>
@@ -15,8 +15,7 @@
     <!-- Scrollable Page Content-->
     <div class="page-content">
       <div class="card demo-card-header-pic">
-        <div id="thread-img"
-          class="card-header align-items-flex-end"></div>
+        <div id="thread-img" class="card-header align-items-flex-end"></div>
         <div class="card-content card-content-padding">
           <p id="thread-description"></p>
         </div>
@@ -44,8 +43,9 @@
 
         // Toggle UI Element
         auth.onAuthStateChanged(user => {
-          user ? newCommentBtn.classList.remove('display')
-          : newCommentBtn.classList.add('display');
+          (user)
+            ? newCommentBtn.classList.remove('display')
+            : newCommentBtn.classList.add('display');
         });
       }
     }

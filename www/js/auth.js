@@ -1,26 +1,16 @@
 // Get Threads Data 
 const getThreads = () => {
   db.collection('threads')
-  .orderBy('created', 'desc')
-  .onSnapshot(snapshot => {
-    setUpThreads(snapshot.docs);
-  });
+    .orderBy('created', 'desc')
+    .onSnapshot(snapshot => setUpThreads(snapshot.docs));
 }
 
 // Listen for Auth Status Changes
-  auth.onAuthStateChanged(user => {
-  if (user) {
-    setUpUI(user);
-  } else {
-    setUpUI(user);
-  }
-});
+auth.onAuthStateChanged(user => (user) ? setUpUI(user) : setUpUI(user));
 
 // Logout
 const logoutBtn = document.querySelector('#logout');
-logoutBtn.addEventListener('click', () => {
-  auth.signOut();
-});
+logoutBtn.addEventListener('click', () => auth.signOut());
 
 // Login
 const signInForm = document.querySelector('#signin-form');

@@ -36,7 +36,7 @@ const setUpUI = (user) => {
 }
 
 // Upload Thread/Comment Image to Firebase Storage
-const uploadImage = (folder, element, id, type) => {
+const uploadImage = (folder, element, id) => {
   let file = document.querySelector(element).files[0];
 
   if (file != undefined) {
@@ -51,9 +51,7 @@ const uploadImage = (folder, element, id, type) => {
         if (progress == 100)
           snapshot.ref.getDownloadURL().then(url => document.querySelector(source).src = url);
 
-      }).catch(error => {
-        console.log(error);
-      });
+      }).catch(error => console.log(error));
   }
 }
 
@@ -61,16 +59,15 @@ const uploadImage = (folder, element, id, type) => {
 const displayImage = (folder, id, element, background) => {
   const ref = firebase.storage().ref(folder);
   const name = id + '.jpg';
+  const filler = './assets/comments-icon.png';
 
   ref.child(name)
     .getDownloadURL()
     .then(url => {
-      (background) ?
-        document.getElementById(element).style.backgroundImage = 'url(' + url + ')'
+      (background)
+        ? document.getElementById(element).style.backgroundImage = 'url(' + url + ')'
         : document.getElementById(element).src = url;
-    }).catch(() => {
-      document.getElementById(id + '-img').src = '/assets/icons/comments-icon.png';
-    });
+    }).catch(() => document.getElementById(id + '-img').src = filler);
 }
 
 // Delete Thread/Comment's Picture
@@ -80,9 +77,7 @@ const deleteImage = (type, id) => {
   // Delete the file
   ref.delete().then(() => {
     // File Deleted Successfully
-  }).catch(error => {
-    console.error(error);
-  });
+  }).catch(error => console.error(error));
 }
 
 // Create New Thread
@@ -117,30 +112,31 @@ const setUpThreads = (data) => {
   data.forEach(doc => {
     const thread = doc.data();
     const li = `
-      <li class="swipeout">
+      <li class="swipeout thread" id="${thread.user}">
         <div class="swipeout-content">
           <a href="/thread/${doc.id}/" data-thread-id="${doc.id}" class="item-link item-content thread-details">
-            <div class="item-media"><img id="${doc.id}-img" width="40" height="40"/></div>
+            <div class="item-media"><img id="${doc.id}-img" class="lazy lazy-fade-in" width="40" height="40"/></div>
             <div class="item-inner">
               <div class="item-title-row">
                 <div class="item-title">${thread.title}</div>
               </div>
-              <div class="item-subtitle">${thread.description}</div>
+              <div class="item-text">${thread.description}</div>
             </div>
           </a>
         </div>
         <div class="swipeout-actions-right">
           <a href="#" class="delete-thread-dialog" data-thread-id="${doc.id}">Delete</a>
         </div>
-      </li>  
-    `;
+      </li> `;
     displayImage('threads/', doc.id, `${doc.id}-img`, false);
     html += li;
     count++;
   });
-  threadsList.innerHTML = (count == 0) ?
-    noContent('No Threads Yet', 'Be the first to create one!')
+  threadsList.innerHTML = (count == 0)
+    ? noContent('No Threads Yet', 'Be the first to create one!')
     : html;
+
+  deleteOption('.thread', '.swipeout-actions-right');
 }
 
 // Setting Up The Thread Details
@@ -161,8 +157,8 @@ const setUpThreadDetails = (id) => {
 // Add New Comment
 const newComment = (id) => {
   $$(document).on('click', '#add-comment', function () {
-    const addCommentBtn = document.querySelector('#add-comment');
     const addCommentForm = document.querySelector('#add-comment-form');
+    const addCommentBtn = document.querySelector('#add-comment');
 
     if (app.input.validate('#description')) {
       addCommentBtn.classList.add('disabled');
@@ -172,7 +168,7 @@ const newComment = (id) => {
         text: addCommentForm['description'].value,
         added: firebase.firestore.FieldValue.serverTimestamp()
       }).then((doc) => {
-        uploadImage('comments/', '#comment-img-upload', doc.id, 'comment');
+        uploadImage('comments/', '#comment-img-upload', doc.id);
         app.dialog.close();
         addCommentForm.reset();
       });
@@ -183,7 +179,7 @@ const newComment = (id) => {
 // Setting Up The Comments
 const setUpComments = (id) => {
   db.collection('comments')
-    .orderBy('added', 'desc')
+    .orderBy('added', 'asc')
     .onSnapshot(snapshot => {
       const commentsList = document.querySelector('.comments');
       let count = 0;
@@ -192,9 +188,9 @@ const setUpComments = (id) => {
         const comment = doc.data();
         if (id == comment.thread) {
           const li = `
-            <div class="card demo-card-header-pic" id="${comment.user}">
+            <div class="card demo-card-header-pic comment" id="${comment.user}">
               <div class="card-content card-content-padding">
-                <img id="${doc.id}-img" class="float-left enlarge-image" width="40" height="40"/>
+                <img id="${doc.id}-img" class="float-left lazy lazy-fade-in enlarge-image" width="40" height="40"/>
                 <p class="item-subtitle" id="comment-description">${comment.text}</p>
               </div>
               <p class="date" id="comment-date">${comment.added.toDate().toDateString()} <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-comment-id="${doc.id}">trash</i></span></p>
@@ -204,10 +200,47 @@ const setUpComments = (id) => {
           count++;
         }
       });
-      commentsList.innerHTML = (count == 0) ?
-        noContent('No Comments Yet', 'Be the first to share what you think!')
+      commentsList.innerHTML = (count == 0)
+        ? noContent('No Comments Yet', 'Be the first to share what you think!')
         : html;
+
+      deleteOption('.comment', '#trash-icon');
     });
+}
+
+// Displaying Modal to Enlarge Image
+$$(document).on('click', '.enlarge-image', function () {
+  const newCommentBtn = document.querySelector('#new-comment');
+  const modal = document.querySelector('#enlarge-image');
+  const modalImage = document.querySelector('#modal-image');
+  const span = document.getElementsByClassName('close')[0];
+
+  newCommentBtn.classList.add('display');
+  modal.style.display = "block";
+  modalImage.src = this.src;
+
+  span.onclick = () => {
+    modal.style.display = "none";
+    newCommentBtn.classList.remove('display');
+  }
+});
+
+// Show Delete For Content Creator
+const deleteOption = (element, content) => {
+  const elements = document.querySelectorAll(element);
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      for (let i = 0; i < elements.length; i++) {
+        if (elements[i].id == firebase.auth().currentUser.uid)
+          elements[i].querySelector(content).classList.remove('display');
+        else elements[i].querySelector(content).classList.add('display');
+      }
+    } else {
+      for (let i = 0; i < elements.length; i++)
+        elements[i].querySelector(content).classList.add('display');
+    }
+  });
 }
 
 // Delete A Comment or A Thread
@@ -240,13 +273,6 @@ $$(document).on('click', '.thread-details', function () {
   setUpComments(id);
   newComment(id);
 })
-
-// Reload Home Page
-$$(document).on('click', '.icon-back', function () {
-  $$(document).on('page:init', '.page[data-name="home"]', function () {
-    window.location.reload();
-  });
-});
 
 // Pop Up With Swipe To Close
 const loginSwipeToClosePopup = app.popup.create({
@@ -299,15 +325,4 @@ $$(document).on('click', '.delete-comment-dialog', function () {
     deleteContent('comments', id);
     deleteImage('comments/', id);
   });
-});
-
-// Displaying Modal to Enlarge Image
-$$(document).on('click', '.enlarge-image', function () {
-  const modal = document.querySelector('#enlarge-image');
-  const modalImage = document.querySelector('#modal-image');
-  const span = document.getElementsByClassName('close')[0];
-
-  modal.style.display = "block";
-  modalImage.src = this.src;
-  span.onclick = () => modal.style.display = "none";
 });

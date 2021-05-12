@@ -50,16 +50,14 @@ const uploadImage = (folder, element, id) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         if (progress == 100)
           snapshot.ref.getDownloadURL().then(url => document.querySelector(source).src = url);
-
       }).catch(error => console.log(error));
   }
 }
 
-// Display Thread/Comment image
+// Display Thread/Comment Image
 const displayImage = (folder, id, element, background) => {
   const ref = firebase.storage().ref(folder);
   const name = id + '.jpg';
-  const filler = './assets/comments-icon.png';
 
   ref.child(name)
     .getDownloadURL()
@@ -67,7 +65,7 @@ const displayImage = (folder, id, element, background) => {
       (background)
         ? document.getElementById(element).style.backgroundImage = 'url(' + url + ')'
         : document.getElementById(element).src = url;
-    }).catch(() => document.getElementById(id + '-img').src = filler);
+    }).catch();
 }
 
 // Delete Thread/Comment's Picture
@@ -166,7 +164,8 @@ const newComment = (id) => {
         thread: id,
         user: firebase.auth().currentUser.uid,
         text: addCommentForm['description'].value,
-        added: firebase.firestore.FieldValue.serverTimestamp()
+        added: firebase.firestore.FieldValue.serverTimestamp(),
+        picture: document.querySelector('#comment-img-upload').files[0] != undefined
       }).then((doc) => {
         uploadImage('comments/', '#comment-img-upload', doc.id);
         app.dialog.close();
@@ -190,12 +189,13 @@ const setUpComments = (id) => {
           const li = `
             <div class="card demo-card-header-pic comment" id="${comment.user}">
               <div class="card-content card-content-padding">
-                <img id="${doc.id}-img" class="float-left lazy lazy-fade-in enlarge-image" width="40" height="40"/>
+                <img id="${doc.id}-img" src="./assets/comments-icon.png" class="float-left lazy lazy-fade-in enlarge-image" width="40" height="40"/>
                 <p class="item-subtitle" id="comment-description">${comment.text}</p>
               </div>
               <p class="date" id="comment-date">${comment.added.toDate().toDateString()} <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-comment-id="${doc.id}">trash</i></span></p>
             </div>`;
-          displayImage('comments/', doc.id, `${doc.id}-img`, false);
+          if (comment.picture)
+            displayImage('comments/', doc.id, `${doc.id}-img`, false)
           html += li;
           count++;
         }
@@ -264,6 +264,13 @@ const noContent = (title, text) => {
     </div>
   `;
 }
+
+// Reload Home Page
+$$(document).on('click', '.icon-back', function () {
+  $$(document).on('page:init', '.page[data-name="home"]', function () {
+    window.location.reload();
+  });
+});
 
 // Event Listeners
 // Get Data for Thread Details Page

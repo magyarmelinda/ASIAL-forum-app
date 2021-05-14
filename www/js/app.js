@@ -73,9 +73,7 @@ const deleteImage = (type, id) => {
   const ref = firebase.storage().ref(type).child(id + '.jpg');
 
   // Delete the file
-  ref.delete().then(() => {
-    // File Deleted Successfully
-  }).catch(error => console.error(error));
+  ref.delete();
 }
 
 // Create New Thread
@@ -92,12 +90,11 @@ const newThread = () => {
         user: firebase.auth().currentUser.uid,
         title: createThreadForm['title'].value,
         description: createThreadForm['description'].value,
-        created: firebase.firestore.FieldValue.serverTimestamp()
+        created: firebase.firestore.Timestamp.now()
       }).then(doc => {
         uploadImage('threads/', '#thread-img-upload', doc.id);
         app.dialog.close();
         createThreadForm.reset();
-        getThreads();
       });
     }
   });
@@ -164,7 +161,7 @@ const newComment = (id) => {
         thread: id,
         user: firebase.auth().currentUser.uid,
         text: addCommentForm['description'].value,
-        added: firebase.firestore.FieldValue.serverTimestamp(),
+        added: firebase.firestore.Timestamp.now(),
         picture: document.querySelector('#comment-img-upload').files[0] != undefined
       }).then((doc) => {
         uploadImage('comments/', '#comment-img-upload', doc.id);
@@ -192,7 +189,7 @@ const setUpComments = (id) => {
                 <img id="${doc.id}-img" src="./assets/comments-icon.png" class="float-left lazy lazy-fade-in enlarge-image" width="40" height="40"/>
                 <p class="item-subtitle" id="comment-description">${comment.text}</p>
               </div>
-              <p class="date" id="comment-date">${comment.added.toDate().toDateString()} <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-comment-id="${doc.id}">trash</i></span></p>
+              <p class="date" id="comment-date">${comment.added.toDate().toDateString()} <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-comment-id="${doc.id}" data-comment-img="${comment.picture}">trash</i></span></p>
             </div>`;
           if (comment.picture)
             displayImage('comments/', doc.id, `${doc.id}-img`, false)
@@ -328,8 +325,9 @@ $$(document).on('click', '.delete-thread-dialog', function () {
 // Confirmation Dialog For Deleting a Comment
 $$(document).on('click', '.delete-comment-dialog', function () {
   let id = $$(this).data('comment-id');
+  let image = $$(this).data('comment-img');
   app.dialog.confirm(' Are you sure you want to delete the comment?', '', function () {
     deleteContent('comments', id);
-    deleteImage('comments/', id);
+    if (image == true) deleteImage('comments/', id);
   });
 });

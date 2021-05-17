@@ -2,7 +2,7 @@
 const getThreads = () => {
   db.collection('threads')
     .orderBy('created', 'desc')
-    .onSnapshot(snapshot => setUpThreads(snapshot.docs));
+    .get().then(snapshot => setUpThreads(snapshot.docs));
 }
 
 // Listen for Auth Status Changes

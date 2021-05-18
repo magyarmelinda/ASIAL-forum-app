@@ -114,7 +114,7 @@ const setUpThreads = (data) => {
             <div class="item-inner">
               <div class="item-title-row">
                 <div class="item-title">${thread.title}  
-                  <div class="display-inline item-text">${username}</div>
+                  <div id="username" class="display-inline item-text">${username}</div>
                 </div>
               </div>
               <div class="item-text">${thread.description}</div>

@@ -61,6 +61,12 @@
   margin-right: 10px
 }
 
+#username {
+  color: #303030;
+  font-size: 11px;
+  font-style: italic;
+}
+
 .modal {
   display: none; 
   position: fixed; 

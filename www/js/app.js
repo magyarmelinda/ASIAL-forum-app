@@ -86,6 +86,7 @@ const newThread = () => {
       createThreadBtn.classList.add('disabled');
       db.collection('threads').add({
         user: firebase.auth().currentUser.uid,
+        email: firebase.auth().currentUser.email,
         title: createThreadForm['title'].value,
         description: createThreadForm['description'].value,
         created: firebase.firestore.Timestamp.now()
@@ -103,6 +104,8 @@ const setUpThreads = (data) => {
   let html = '';
   data.forEach(doc => {
     const thread = doc.data();
+    let email = thread.email.split('@');
+    let username = email[0];
     const li = `
       <li class="swipeout thread" id="${thread.user}">
         <div class="swipeout-content">
@@ -110,7 +113,9 @@ const setUpThreads = (data) => {
             <div class="item-media"><img id="${doc.id}-img" class="lazy lazy-fade-in" width="40" height="40"/></div>
             <div class="item-inner">
               <div class="item-title-row">
-                <div class="item-title">${thread.title}</div>
+                <div class="item-title">${thread.title}  
+                  <div class="display-inline item-text">${username}</div>
+                </div>
               </div>
               <div class="item-text">${thread.description}</div>
             </div>

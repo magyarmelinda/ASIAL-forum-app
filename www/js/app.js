@@ -5,9 +5,6 @@ var app = new Framework7({
   name: 'framework7-core-tab-view', // App Name
   theme: 'auto', // Automatic Theme Detection
 
-  view: {
-    stackPages: true, // For Navigation Between Multi-level Pages
-  },
   data: function () {
     return {
       // App Root Data
@@ -49,7 +46,7 @@ const uploadImage = (folder, element, id, thread) => {
       .then(snapshot => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         if (progress == 100) {
-          (folder == 'threads/') ?  getThreads() : setUpComments(thread);
+          (folder == 'threads/') ? getThreads() : setUpComments(thread);
           app.dialog.close();
         }
       }).catch(error => console.log(error));
@@ -250,7 +247,7 @@ const deleteContent = (collection, id) => {
       if (firebase.auth().currentUser.uid == data.user) {
         doc.ref.delete().then(() => {
           (collection == 'threads') ? getThreads() : setUpComments(data.thread);
-        });      
+        });
       }
     });
   });
@@ -265,13 +262,6 @@ const noContent = (title, text) => {
     </div>
   `;
 }
-
-// Reload Home Page
-$$(document).on('click', '.icon-back', function () {
-  $$(document).on('page:init', '.page[data-name="home"]', function () {
-    window.location.reload();
-  });
-});
 
 // Event Listeners
 // Get Data for Thread Details Page
@@ -332,7 +322,7 @@ $$(document).on('click', '.delete-comment-dialog', function () {
   let id = $$(this).data('comment-id');
   let image = $$(this).data('comment-img');
   app.dialog.confirm(' Are you sure you want to delete the comment?', '', function () {
-    deleteContent('comments', id); 
+    deleteContent('comments', id);
     (image == 'true') ? deleteImage('comments/', id) : setUpComments(thread);
   });
 });

@@ -114,7 +114,7 @@ const setUpThreads = (data) => {
             <div class="item-inner">
               <div class="item-title-row">
                 <div class="item-title">${thread.title}  
-                  <div id="username" class="display-inline item-text">${username}</div>
+                  <div id="username" class="display-inline">${username}</div>
                 </div>
               </div>
               <div class="item-text">${thread.description}</div>
@@ -162,6 +162,7 @@ const newComment = (id) => {
       db.collection('comments').add({
         thread: id,
         user: firebase.auth().currentUser.uid,
+        email: firebase.auth().currentUser.email,
         text: addCommentForm['description'].value,
         added: firebase.firestore.Timestamp.now(),
         picture: document.querySelector('#comment-img-upload').files[0] != undefined
@@ -185,15 +186,17 @@ const setUpComments = (id) => {
       let html = '';
       snapshot.docs.forEach(doc => {
         const comment = doc.data();
+        let email = comment.email.split('@');
+        let username = email[0];
         if (id == comment.thread) {
           const li = `
-            <div class="card demo-card-header-pic comment" id="${comment.user}">
-              <div class="card-content card-content-padding">
-                <img id="${doc.id}-img" src="./assets/comments-icon.png" class="float-left lazy lazy-fade-in enlarge-image" width="40" height="40"/>
-                <p class="item-subtitle" id="comment-description">${comment.text}</p>
-              </div>
-              <p class="date" id="comment-date">${comment.added.toDate().toDateString()} <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-thread-id="${comment.thread}" data-comment-id="${doc.id}" data-comment-img="${comment.picture}">trash</i></span></p>
-            </div>`;
+          <div class="card demo-card-header-pic comment" id="${comment.user}">
+            <div class="card-content card-content-padding">
+              <img id="${doc.id}-img" src="./assets/comments-icon.png" class="float-left lazy lazy-fade-in enlarge-image" width="40" height="40"/>
+              <p class="item-subtitle" id="comment-description">${comment.text}</p>
+            </div>
+            <p class="date" id="comment-date">${comment.added.toDate().toDateString()}, ${username} <span id="trash-icon"> <i class="icon f7-icons size-15 delete-comment-dialog" data-thread-id="${comment.thread}" data-comment-id="${doc.id}" data-comment-img="${comment.picture}">trash</i></span></p>
+          </div>`;
           if (comment.picture)
             displayImage('comments/', doc.id, `${doc.id}-img`, false);
           html += li;

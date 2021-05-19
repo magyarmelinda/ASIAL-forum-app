@@ -39,7 +39,6 @@ const uploadImage = (folder, element, id, thread) => {
   if (file != undefined) {
     const ref = firebase.storage().ref(folder);
     const name = id + '.jpg';
-    const source = '#' + id + '-img';
     const metadata = { contentType: file.type };
 
     ref.child(name).put(file, metadata)

@@ -68,8 +68,8 @@ const displayImage = (folder, id, element, background) => {
 }
 
 // Delete Thread/Comment's Picture
-const deleteImage = (type, id) => {
-  const ref = firebase.storage().ref(type).child(id + '.jpg');
+const deleteImage = (folder, id) => {
+  const ref = firebase.storage().ref(folder).child(id + '.jpg');
   // Delete the file
   ref.delete();
 }

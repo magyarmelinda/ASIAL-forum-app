@@ -1,6 +1,6 @@
-var $$ = Dom7;
+const $$ = Dom7;
 
-var app = new Framework7({
+const app = new Framework7({
   root: '#app', // App Root Element
   name: 'framework7-core-tab-view', // App Name
   theme: 'auto', // Automatic Theme Detection

@@ -6,7 +6,7 @@ const getThreads = () => {
 }
 
 // Listen for Auth Status Changes
-auth.onAuthStateChanged(user => (user) ? setUpUI(user) : setUpUI(user));
+auth.onAuthStateChanged(user => setUpUI(user));
 
 // Logout
 const logoutBtn = document.querySelector('#logout');

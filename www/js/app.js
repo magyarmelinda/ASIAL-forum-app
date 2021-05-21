@@ -66,7 +66,7 @@ const displayImage = (folder, id, element, background) => {
     }).catch();
 }
 
-// Delete Thread/Comment's Picture
+// Delete Thread/Comment Image
 const deleteImage = (folder, id) => {
   const ref = firebase.storage().ref(folder).child(id + '.jpg');
   // Delete the file

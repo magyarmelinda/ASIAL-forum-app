@@ -271,6 +271,13 @@ const noContent = (title, text) => {
 }
 
 // Event Listeners
+// Reload Home
+$$(document).on('click', '.back-link', function () {
+  $$(document).on('page:init', '.page[data-name="home"]', function () {
+    window.location.reload();
+  });
+});
+
 // Get Data for Thread Details Page
 $$(document).on('click', '.thread-details', function () {
   const id = $$(this).data('thread-id');

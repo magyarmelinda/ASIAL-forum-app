@@ -10,7 +10,7 @@ Created with Framework 7.
 
 ## Database
 
-You have to configure and initialize Firebase to use it.
+You need to configure and initialize Firebase to use it.
 
 - [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart)
-- [Firebase Storage](https://firebase.google.com/docs/storage/web/start) If you get a 403 error, please check the Firebase Storage Rules.
+- [Firebase Storage](https://firebase.google.com/docs/storage/web/start) - If you encounter a 403 error, check the Firebase Storage rules.

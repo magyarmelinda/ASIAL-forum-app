@@ -1,5 +1,6 @@
 <template>
   <div class="page" data-name="thread">
+
     <!-- Top Navbar -->
     <div class="navbar">
       <div class="navbar-bg"></div>
@@ -12,6 +13,7 @@
         </div>
       </div>
     </div>
+
     <!-- Scrollable Page Content-->
     <div class="page-content">
       <div class="card demo-card-header-pic">
@@ -26,11 +28,14 @@
       <!-- The Modal -->
       <div id="enlarge-image" class="modal">
         <span class="close">&times;</span>
-        <img class="modal-content" id="modal-image">
+        <img class="modal-content" id="modal-image" />
       </div>
     </div>
+
     <div class="fab fab-right-bottom display" id="new-comment">
-      <a href="#" class="new-comment-dialog"><i class="icon f7-icons">bubble_left_fill</i></a>
+      <a href="#" class="new-comment-dialog">
+        <i class="icon f7-icons">bubble_left_fill</i>
+      </a>
     </div>
   </div>
 </template>
@@ -39,15 +44,15 @@
   return {
     on: {
       pageInit: function (e, page) {
-        const newCommentBtn = document.querySelector('#new-comment');
+        const newCommentBtn = document.querySelector("#new-comment");
 
         // Toggle UI Element
-        auth.onAuthStateChanged(user => {
-          (user)
-            ? newCommentBtn.classList.remove('display')
-            : newCommentBtn.classList.add('display');
+        auth.onAuthStateChanged((user) => {
+          user
+            ? newCommentBtn.classList.remove("display")
+            : newCommentBtn.classList.add("display");
         });
-      }
-    }
-  }
+      },
+    },
+  };
 </script>
